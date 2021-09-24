@@ -7,6 +7,7 @@ public class LongLat {
     public static final double CONFINEMENT_AREA_X2 = -3.184319;
     public static final double CONFINEMENT_AREA_Y1 = 55.942617;
     public static final double CONFINEMENT_AREA_Y2 = 55.946333;
+    public static final double MOVEMENT_DISTANCE =  0.00015;
     double longitude;
     double latitude;
 
@@ -57,6 +58,17 @@ public class LongLat {
         return confined;
     }
 
-    //TODO nextPosition class.
+    /**
+     * method that calculates the effect of moving in a given angle
+     * @param angle the angle that the drone moves in
+     * @return returns a LongLat object with updated coordinates
+     */
+    public LongLat nextPosition(int angle){
+        double newLong = MOVEMENT_DISTANCE * Math.tan(angle);
+        double newLat = MOVEMENT_DISTANCE * Math.cos(angle);
+        return new LongLat(newLong, newLat);
+    }
+
+//TODO error handling and input checking
 
 }
