@@ -67,7 +67,7 @@ public class AppTest {
     public void testAngle20(){
         LongLat nextPosition = appletonTower.nextPosition(20);
         LongLat calculatedPosition = new LongLat(-3.186733046106882, 55.9445453030215);
-        assertTrue(approxEq(nextPosition, calculatedPosition));
+         assertTrue(approxEq(nextPosition, calculatedPosition));
     }
 
     @Test

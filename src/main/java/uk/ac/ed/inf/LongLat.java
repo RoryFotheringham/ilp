@@ -1,6 +1,6 @@
 package uk.ac.ed.inf;
 
-import com.sun.org.apache.xpath.internal.functions.FuncFalse;
+//import com.sun.org.apache.xpath.internal.functions.FuncFalse;
 
 public class LongLat {
     public static final double CONFINEMENT_AREA_X1 = -3.192473; //constants outlining the confinement area in long-lat degrees
@@ -8,6 +8,7 @@ public class LongLat {
     public static final double CONFINEMENT_AREA_Y1 = 55.942617;
     public static final double CONFINEMENT_AREA_Y2 = 55.946333;
     public static final double MOVEMENT_DISTANCE =  0.00015;
+    public static final int HOVER_VALUE = -999;
     double longitude;
     double latitude;
 
@@ -59,14 +60,27 @@ public class LongLat {
     }
 
     /**
-     * method that calculates the effect of moving in a given angle
+     * method that calculates the effect of moving in a straight line pointing towards a given angle.
+     * It only accepts angles that are a multiple of 10 or the value -999
+     * which is a junk value intepreted as 'hover' and does not change LongLat coords.
      * @param angle the angle that the drone moves in
      * @return returns a LongLat object with updated coordinates
      */
     public LongLat nextPosition(int angle){
-        double newLong = MOVEMENT_DISTANCE * Math.tan(angle);
-        double newLat = MOVEMENT_DISTANCE * Math.cos(angle);
-        return new LongLat(newLong, newLat);
+        if (angle % 10 == 0) {
+            double deltaLong = MOVEMENT_DISTANCE * Math.cos(Math.toRadians(angle));
+            double deltaLat = MOVEMENT_DISTANCE * Math.sin(Math.toRadians(angle));
+
+            if (!isConfined()){
+                System.out.println("bad"); //TODO figure out if a new exeption class is needed.
+            }
+
+            return new LongLat(this.longitude + deltaLong, this.latitude + deltaLat);
+        }
+        else if (angle == HOVER_VALUE){
+            return new LongLat(this.longitude, this.latitude);
+        }
+        else throw new IllegalArgumentException("Angle must be either a multiple of 10 or " + HOVER_VALUE);
     }
 
 //TODO error handling and input checking
