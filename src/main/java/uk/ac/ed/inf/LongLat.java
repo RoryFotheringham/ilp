@@ -1,7 +1,5 @@
 package uk.ac.ed.inf;
 
-//import com.sun.org.apache.xpath.internal.functions.FuncFalse;
-
 public class LongLat {
     public static final double CONFINEMENT_AREA_X1 = -3.192473; //constants outlining the confinement area in long-lat degrees
     public static final double CONFINEMENT_AREA_X2 = -3.184319;
@@ -72,7 +70,7 @@ public class LongLat {
             double deltaLat = MOVEMENT_DISTANCE * Math.sin(Math.toRadians(angle));
 
             if (!isConfined()){
-                System.out.println("bad"); //TODO figure out if a new exeption class is needed.
+                System.out.println("bad"); //TODO figure out if a new exception class is needed or should i throw error.
             }
 
             return new LongLat(this.longitude + deltaLong, this.latitude + deltaLat);
@@ -80,9 +78,11 @@ public class LongLat {
         else if (angle == HOVER_VALUE){
             return new LongLat(this.longitude, this.latitude);
         }
-        else throw new IllegalArgumentException("Angle must be either a multiple of 10 or " + HOVER_VALUE);
+        else throw new Error("Angle must be either a multiple of 10 or " + HOVER_VALUE);
+        //TODO EXCEPTION IS SEMANTICALLY WRONG BECAUSE THESE KINDS OF INPUTS ARE UNRECOVERABLE ERRORS.
+        // perhaps throw an error instead - investigate this.
+        // also  - what about when the next position is not confined? unrecoverable? give it some thought
     }
 
-//TODO error handling and input checking
 
 }
