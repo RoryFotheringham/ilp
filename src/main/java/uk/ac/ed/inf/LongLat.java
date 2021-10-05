@@ -59,8 +59,8 @@ public class LongLat {
 
     /**
      * method that calculates the effect of moving in a straight line pointing towards a given angle.
-     * It only accepts angles that are a multiple of 10 or the value -999
-     * which is a junk value intepreted as 'hover' and does not change LongLat coords.
+     * It only accepts angles that are a multiple of 10 or the value -999.
+     * program terminates if the value is not one of the accepted values
      * @param angle the angle that the drone moves in
      * @return returns a LongLat object with updated coordinates
      */
@@ -69,20 +69,15 @@ public class LongLat {
             double deltaLong = MOVEMENT_DISTANCE * Math.cos(Math.toRadians(angle));
             double deltaLat = MOVEMENT_DISTANCE * Math.sin(Math.toRadians(angle));
 
-            if (!isConfined()){
-                System.out.println("bad"); //TODO figure out if a new exception class is needed or should i throw error.
-            }
-
             return new LongLat(this.longitude + deltaLong, this.latitude + deltaLat);
         }
-        else if (angle == HOVER_VALUE){
+        else if (angle == HOVER_VALUE){ //Returns new LongLat obj. with current long and lat coordinates if value is HOVER_VALUE
             return new LongLat(this.longitude, this.latitude);
         }
-        else throw new Error("Angle must be either a multiple of 10 or " + HOVER_VALUE);
-        //TODO EXCEPTION IS SEMANTICALLY WRONG BECAUSE THESE KINDS OF INPUTS ARE UNRECOVERABLE ERRORS.
-        // perhaps throw an error instead - investigate this.
-        // also  - what about when the next position is not confined? unrecoverable? give it some thought
+        else{ //If angle is not one of the accepted values, the system will terminate and output a diagnostic message
+            System.out.println("Angle must be either a multiple of 10 or " + HOVER_VALUE);
+            System.exit(1);
+            return null; //This line will not be run as the program will have terminated but it is necessary for compilation
+        }
     }
-
-
 }

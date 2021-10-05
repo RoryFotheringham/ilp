@@ -1,7 +1,7 @@
 package uk.ac.ed.inf;
 
 
-import java.net.http.HttpClient;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -10,19 +10,23 @@ import com.google.gson.Gson;
 public class Menus {
 
     Collection<Shop> shops;
-    String machineName;
+    String machineName;//TODO perhaps process these instance vars into the urlString that is called in Client
     String Port;
-
-    //TODO unmarshall data from the website to the menus class then complete getDeliveryCost()
-    // perhaps by searching through each menu item and storing each one that matches the string.
-
-
-    private static final HttpClient client = HttpClient.newHttpClient();
 
     public Menus(String name, String port){
         this.machineName = name;
         this.Port = port;
     }
+
+    public void makeMenus() throws IOException, InterruptedException { //TODO figure out what's going on with these exceptions
+        Client client = new Client();
+        String menus = client.getResponse("http://localhost:9898/menus/menus.json");
+
+        //TODO Unmarshal with GSON and work with Collection<Shop> shops
+
+    }
+
+
 
     public int getDeliveryCost(String ... items){
         for (String item : items){
