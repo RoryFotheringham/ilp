@@ -1,5 +1,9 @@
 package uk.ac.ed.inf;
 
+/**
+ * LongLat class is representation of a Longitude and Latitude coordinate pair.
+ * stores values and performs basic calculations.
+ */
 public class LongLat {
     public static final double CONFINEMENT_AREA_X1 = -3.192473; //constants outlining the confinement area in long-lat degrees
     public static final double CONFINEMENT_AREA_X2 = -3.184319;

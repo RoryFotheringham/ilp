@@ -7,15 +7,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
- * Menus class, contains data on the menus and items as well as related functionality
+ * Menus class, contains data on the menus' items as well as related functionality
  */
 public class Menus {
+    private static final String MENUS_JSON_DESTINATION = "/menus/menus.json";
     private static final int DELIVERY_CHARGE = 50; //50p delivery cost to be added to each delivery cost
     String port;
     String machineName;
     ArrayList<MenuDetails> menuDetailsList; //Contains menu data which is stored on instantiation of Menus class.
 
-    public Menus(String port, String machineName){
+    public Menus(String machineName, String port){
         this.port = port;
         this.machineName = machineName;
         this.menuDetailsList = makeMenus();
@@ -27,8 +28,8 @@ public class Menus {
      * @return Returns an ArrayList<MenuDetails> with fields: name, location, menu filled with respect to the JSON file.
      */
     private ArrayList<MenuDetails> makeMenus(){
-        Client client = new Client("http://localhost:9898/menus/menus.json", "9898"); //TODO The values in the constructor don't do anything at the moment
-        String jsonMenuDetailsString = client.getResponse("http://localhost:9898/menus/menus.json");
+        Client client = new Client();
+        String jsonMenuDetailsString = client.getResponse("http://" + machineName + ":" + port + MENUS_JSON_DESTINATION);
 
         Type listType = new TypeToken<ArrayList<MenuDetails>>(){}.getType();
         ArrayList<MenuDetails> menuDetailsList = new Gson().fromJson(jsonMenuDetailsString, listType);

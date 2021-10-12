@@ -4,15 +4,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * Client class manages responses and requests from the server and handles errors appropriately.
+ */
 public class Client {
-    //TODO check that I don't need to check the type of each exception for error handling and whether each exception results in a fatal error.
-    String port;
-    String server;
-
-    public Client(String port, String server){
-        this.port = port;
-        this.server = server;
-    }
 
     private static final HttpClient client = HttpClient.newHttpClient();
 
@@ -46,19 +41,13 @@ public class Client {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         }
         catch(Exception e){
-            System.out.println("Fatal Error: Unable to connect to: " + server + " at port: " + port);
+            System.out.println("Fatal Error: Unable to connect to server");
             System.exit(1);//Exit the application
-        }
-
-        //Checks the responses status code for a 404 error
-        if (response.statusCode() == 404){
-            System.out.println("Fatal Error: 404 - Requested resource could not be found");
-            System.exit(1); //Exit the application
         }
 
         if (response.statusCode() != 200){
             System.out.println("Fatal Error: Unexpected response code: " + response.statusCode());
-            System.exit(-1); //Exit the application (status: -1 indicates unexpected error)
+            System.exit(1); //Exit the application
         }
         return response.body();
     }
