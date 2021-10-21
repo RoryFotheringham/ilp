@@ -15,6 +15,7 @@ public class Menus {
     String port;
     String machineName;
     ArrayList<MenuDetails> menuDetailsList; //Contains menu data which is stored on instantiation of Menus class.
+    //todo menuDetailsList can be a HashMap instead of ArrayList turn search problem into a lookup problem.
 
     public Menus(String machineName, String port){
         this.port = port;

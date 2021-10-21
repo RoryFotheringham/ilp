@@ -56,6 +56,8 @@
             <compilerArgs>
               <arg>-Xlint:all,-classfile</arg>
             </compilerArgs>
+            <source>13</source>
+            <target>13</target>
           </configuration>
         </plugin>
 
