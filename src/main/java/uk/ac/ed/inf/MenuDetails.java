@@ -1,5 +1,6 @@
 package uk.ac.ed.inf;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * MenuDetails class contains name, location and item information of a menu.

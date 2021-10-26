@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Menus class, contains data on the menus' items as well as related functionality
@@ -14,13 +15,15 @@ public class Menus {
     private static final int DELIVERY_CHARGE = 50; //50p delivery cost to be added to each delivery cost
     String port;
     String machineName;
-    ArrayList<MenuDetails> menuDetailsList; //Contains menu data which is stored on instantiation of Menus class.
-    //todo menuDetailsList can be a HashMap instead of ArrayList turn search problem into a lookup problem.
+    ArrayList<MenuDetails> menuDetailsList;//Contains menu data which is stored on instantiation of Menus class.
+    HashMap<String, Item> itemMap;
+
 
     public Menus(String machineName, String port){
         this.port = port;
         this.machineName = machineName;
         this.menuDetailsList = makeMenus();
+        this.itemMap = makeItemMap();
     }
 
     /**
@@ -39,25 +42,33 @@ public class Menus {
     }
 
     /**
-     * Searches for and calculates the total delivery cost of an arbitrary number of items.
+     * Creates an map of type <String, Item> to enable a constant lookup of item cost.
+     * @return returns the map
+     */
+     private HashMap<String, Item> makeItemMap(){
+        HashMap<String, Item> itemMap = new HashMap<String, Item>();
+        for (MenuDetails menuDetails : menuDetailsList){ //Iterates through ArrayList of MenuDetails
+            for(Item item : menuDetails.menu){
+                item.store = menuDetails.name; //Assign the name of the store to the store field in Item object
+                itemMap.put(item.item, item); //Add each item object to the map
+            }
+        }
+        return itemMap;
+    }
+
+    /**
+     * Calculates the total delivery cost of an arbitrary number of items.
      * @param requestedItems arbitrary number of strings which the method will calculate the cost of delivering.
      * @return returns the total cost of the items including the delivery charge.
      */
     public int getDeliveryCost(String ... requestedItems){
-        int totalCost = DELIVERY_CHARGE; //Value initialises to the delivery cost
-        for (String requestedItem : requestedItems){
-            boolean found = false; //Boolean tracks whether the requested item has been found
-            for (MenuDetails menuDetails : menuDetailsList){ //2D loop searches through each item contained within each menu
-                for (Item menuItem : menuDetails.menu){
-                    if (menuItem.item.equals(requestedItem)){
-                        totalCost += menuItem.pence;
-                        found = true;
-                    }
-                    if (found){ break; } //break out of both loops when item has been found to reduce unnecessary searching
-                }
-                if (found){ break; }
-            }
+        int totalCost = DELIVERY_CHARGE;
+        for (String itemName : requestedItems){
+            Item item = itemMap.get(itemName);
+            totalCost += item.pence;
         }
         return totalCost;
     }
 }
+
+
