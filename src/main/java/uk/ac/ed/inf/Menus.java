@@ -31,7 +31,7 @@ public class Menus {
      * This method is called when an instance of Menus is created.
      * @return Returns an ArrayList<MenuDetails> with fields: name, location, menu filled with respect to the JSON file.
      */
-    private ArrayList<MenuDetails> makeMenus(){
+    private ArrayList<MenuDetails> makeMenus(){ //todo can/should this be static? investigate
         Client client = new Client();
         String jsonMenuDetailsString = client.getResponse("http://" + machineName + ":" + port + MENUS_JSON_DESTINATION);
 
@@ -59,7 +59,7 @@ public class Menus {
     /**
      * Calculates the total delivery cost of an arbitrary number of items.
      * @param requestedItems arbitrary number of strings which the method will calculate the cost of delivering.
-     * @return returns the total cost of the items including the delivery charge.
+     * @return returns the total cost of the items includng the delivery charge.
      */
     public int getDeliveryCost(String ... requestedItems){
         int totalCost = DELIVERY_CHARGE;
