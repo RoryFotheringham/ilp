@@ -7,11 +7,9 @@ public class App
 {
     public static void main( String[] args ) throws SQLException {
 //todo handle the args to construct Menus and Orders Classes
-        Date date = new Date(2020,12, 23);
+        Date date = Date.valueOf("2023-03-31");
         Orders orders = new Orders("localhost", "1527", date);
 
-        for (String orderNo : orders.ordersListString){
-            System.out.println(orderNo);
-        }
+        System.out.println(orders.ordersList.get(0).customer);
     }
 }

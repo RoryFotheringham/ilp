@@ -2,47 +2,43 @@ package uk.ac.ed.inf;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 
 //This is going to be where we read from and store all of the orders from the database
 
 public class Orders {
-    ArrayList<OrderOfDay> ordersList;
-    ArrayList<String> ordersListString;
+    ArrayList<OrderDetails> ordersList;
     String port;
     String machineName;
-    java.util.Date utilDate;
-
+    java.sql.Date date;
 
     //HashMap<Date, OrderOfDay> ordersODHashMap;
 
-    public Orders(String machineName, String port, java.util.Date utilDate) throws SQLException {
+    public Orders(String machineName, String port, java.sql.Date date) throws SQLException {
       // this.ordersList = readOrders();
        this.machineName = machineName;
        this.port = port;
-       this.utilDate = utilDate;
-
-        this.ordersListString = readOrders();
-
+       this.date = date;
+       this.ordersList = readOrders();
     }
 
-    public ArrayList<String> readOrders() throws SQLException { //todo maybe i could make this method throw a sql exception
+    public ArrayList<OrderDetails> readOrders() throws SQLException { //todo maybe i could make this method throw a sql exception
                                                 // maybe then i could just try catch the whole method in one block
-        ArrayList<String> ordersListString = new ArrayList<String>();
+        ArrayList<OrderDetails> ordersList = new ArrayList<OrderDetails>();
 
         Connection conn = null;
         try{
             conn = DriverManager.getConnection("jdbc:derby://" + machineName + ":" + port + "/derbyDB");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Fatal Error: Database not connected");
+            System.out.println("Fatal Error: Database not found at port: " + port);
+            System.out.println("jdbc:derby://" + machineName + ":" + port + "/derbyDB");
             System.exit(1);
         }
 
-        final String ordersQuery = "select * from orders";
-        PreparedStatement ps = conn.prepareStatement(ordersQuery);
+        final String ordersQuery = "select * from orders where deliveryDate = ?";
+       // PreparedStatement ps = conn.prepareStatement(ordersQuery);
 
-/*
+
         PreparedStatement psOrdersQuery = null;
         try {
             psOrdersQuery = conn.prepareStatement(ordersQuery);
@@ -52,21 +48,17 @@ public class Orders {
             System.exit(-1);
         }
 
-        //java.sql.Date sqlDate = new java.sql.Date(this.utilDate.getTime());
-
         try {
-            psOrdersQuery.setString(1, String.valueOf(utilDate));
+            psOrdersQuery.setString(1, String.valueOf(date));
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Fatal Error: Unexpected error with query string");
             System.exit(-1);
         }
 
- */
-
         ResultSet rs = null;
         try {
-            rs = ps.executeQuery();
+            rs = psOrdersQuery.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Fatal Error: Unexpected error with query");
@@ -82,10 +74,18 @@ public class Orders {
         }
 
         while (rs.next()) {
-            String orderNo = rs.getString("deliveryDate");
-            ordersListString.add(orderNo);
+            String orderNo = rs.getString("orderNo");
+            String deliverTo = rs.getString("deliverTo");
+            String customer = rs.getString("customer");
+            String deliveryDate = rs.getString("deliveryDate");
+            //todo use this data to instantiate an orders class which is then added to a list ordersList<Order>
+            //todo then iterate through each item in that list and map the orderNo to item object in a HashMap.
+            OrderDetails order = new OrderDetails(orderNo, deliveryDate, customer, deliverTo);
+            ordersList.add(order);
         }
 
-        return ordersListString;
+        return ordersList;
     }
+
+
 }
