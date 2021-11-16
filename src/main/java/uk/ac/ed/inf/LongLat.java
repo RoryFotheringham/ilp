@@ -1,5 +1,11 @@
 package uk.ac.ed.inf;
 
+import com.google.gson.Gson;
+import com.what3words.javawrapper.What3WordsV3;
+import com.what3words.javawrapper.response.ConvertToCoordinates;
+import com.what3words.javawrapper.response.Coordinates;
+import com.what3words.javawrapper.response.Square;
+
 /**
  * LongLat class is representation of a Longitude and Latitude coordinate pair.
  * stores values and performs basic calculations.
@@ -17,6 +23,29 @@ public class LongLat {
     public LongLat(double longitude, double latitude){
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public LongLat(String what3words, What3WordsV3 api){
+        ConvertToCoordinates coordinates = api.convertToCoordinates(what3words).execute();
+        WhatThreeWords w3w = new Gson().fromJson(String.valueOf(coordinates), WhatThreeWords.class);
+        double[] coords = Midpoint(w3w);
+        this.longitude = coords[0];
+        this.latitude = coords[1];
+    }
+
+    private double[] Midpoint(WhatThreeWords w3w){
+        Coordinates coordsSW = w3w.square.getSouthwest();
+        double x1 = coordsSW.getLng();
+        double y1 = coordsSW.getLng();
+        Coordinates coordsNE = w3w.square.getNortheast();
+        double x2 = coordsNE.getLng();
+        double y2 = coordsNE.getLat();
+
+        double[] newCoords = new double[2];
+        newCoords[0] = x1 + (x2 - x1);
+        newCoords[1] = y1 + (y2 - y1);
+
+        return newCoords;
     }
 
     /**

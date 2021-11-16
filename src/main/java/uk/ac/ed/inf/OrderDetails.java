@@ -8,9 +8,9 @@ public class OrderDetails {//todo investigate Date type and LongLat type for the
     String deliveryDate;
     ArrayList<Item> items;
     String customer;
-    String deliverTo;
+    LongLat deliverTo;
 
-public OrderDetails(String orderNo, String deliveryDate, String customer, String deliverTo) {
+public OrderDetails(String orderNo, String deliveryDate, String customer, LongLat deliverTo) {
     this.deliveryDate = deliveryDate;
     this.customer = customer;
     this.deliverTo = deliverTo;
