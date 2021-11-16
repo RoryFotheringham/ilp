@@ -26,6 +26,10 @@ public class Menus {
         this.itemMap = makeItemMap();
     }
 
+    public HashMap<String, Item> getItemMap() {
+        return itemMap;
+    }
+
     /**
      * Makes a request to the web server for the JSON menus data and parses into an ArrayList<MenuDetails>.
      * This method is called when an instance of Menus is created.

@@ -15,6 +15,7 @@ public OrderDetails(String orderNo, String deliveryDate, String customer, String
     this.customer = customer;
     this.deliverTo = deliverTo;
     this.orderNo = orderNo;
+    this.items = new ArrayList<Item>();
     }
 
 }
