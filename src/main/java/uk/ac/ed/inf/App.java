@@ -7,15 +7,15 @@ import java.util.HashMap;
 public class App
 {
     public static void main( String[] args ) throws SQLException {
-    String dbPort = "1527";
-    String webPort = "9898";
+    String portDB = "1527";
+    String portWeb = "9898";
     String machineName = "localhost";
     Date date = Date.valueOf("2023-03-31"); //placeholder params
 //todo handle the args to construct Menus and Orders Classes
 
 
-        Menus menus = new Menus(machineName, webPort);
-        Orders orders = new Orders(machineName, dbPort, date, menus.getItemMap());
+        Menus menus = new Menus(machineName, portWeb);
+        Orders orders = new Orders(machineName, portWeb, portDB, date, menus.getItemMap());
 
     }
 }

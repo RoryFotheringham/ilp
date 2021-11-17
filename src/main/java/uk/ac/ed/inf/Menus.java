@@ -2,6 +2,7 @@ package uk.ac.ed.inf;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.what3words.javawrapper.What3WordsV3;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 public class Menus {
     private static final String MENUS_JSON_DESTINATION = "/menus/menus.json";
     private static final int DELIVERY_CHARGE = 50; //50p delivery cost to be added to each delivery cost
+
     String port;
     String machineName;
     ArrayList<MenuDetails> menuDetailsList;//Contains menu data which is stored on instantiation of Menus class.
@@ -54,6 +56,8 @@ public class Menus {
         for (MenuDetails menuDetails : menuDetailsList){ //Iterates through ArrayList of MenuDetails
             for(Item item : menuDetails.menu){
                 item.store = menuDetails.name; //Assign the name of the store to the store field in Item object
+
+                item.longLat = new LongLat(menuDetails.location, machineName, port);
                 itemMap.put(item.item, item); //Add each item object to the map
             }
         }
@@ -63,7 +67,7 @@ public class Menus {
     /**
      * Calculates the total delivery cost of an arbitrary number of items.
      * @param requestedItems arbitrary number of strings which the method will calculate the cost of delivering.
-     * @return returns the total cost of the items includng the delivery charge.
+     * @return returns the total cost of the items including the delivery charge.
      */
     public int getDeliveryCost(String ... requestedItems){
         int totalCost = DELIVERY_CHARGE;

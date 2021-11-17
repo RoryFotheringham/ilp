@@ -25,27 +25,10 @@ public class LongLat {
         this.longitude = longitude;
     }
 
-    public LongLat(String what3words, What3WordsV3 api){
-        ConvertToCoordinates coordinates = api.convertToCoordinates(what3words).execute();
-        WhatThreeWords w3w = new Gson().fromJson(String.valueOf(coordinates), WhatThreeWords.class);
-        double[] coords = Midpoint(w3w);
+    public LongLat(String what3words, String machineName, String port){
+        double[] coords = WhatThreeWords.convertToCoordinates(what3words, machineName, port);
         this.longitude = coords[0];
         this.latitude = coords[1];
-    }
-
-    private double[] Midpoint(WhatThreeWords w3w){
-        Coordinates coordsSW = w3w.square.getSouthwest();
-        double x1 = coordsSW.getLng();
-        double y1 = coordsSW.getLng();
-        Coordinates coordsNE = w3w.square.getNortheast();
-        double x2 = coordsNE.getLng();
-        double y2 = coordsNE.getLat();
-
-        double[] newCoords = new double[2];
-        newCoords[0] = x1 + (x2 - x1);
-        newCoords[1] = y1 + (y2 - y1);
-
-        return newCoords;
     }
 
     /**

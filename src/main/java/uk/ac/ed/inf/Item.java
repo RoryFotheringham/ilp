@@ -9,4 +9,5 @@ public class Item {
         String item;
         int pence;
         String store;
+        LongLat longLat;
 }

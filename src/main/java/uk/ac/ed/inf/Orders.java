@@ -12,7 +12,8 @@ import java.util.HashMap;
 public class Orders {
     private static final String W3W_API_KEY = "NDH4FINL";
     ArrayList<OrderDetails> ordersList;
-    String port;
+    String portDB;
+    String portWeb;
     String machineName;
     java.sql.Date date;
     Connection conn;
@@ -21,15 +22,17 @@ public class Orders {
      * The only constructor for Orders class
      *
      * @param machineName Name of database server
-     * @param port Port number
+     * @param portDB Port of Database Server
+     * @param portWeb Port of Web Server
      * @param date The date that the orders are to be gathered from
      * @param itemMap Passed from Menus, maps the order number to item object
      * @throws SQLException ...
      */
-    public Orders(String machineName, String port, java.sql.Date date, HashMap<String, Item> itemMap) throws SQLException {
+    public Orders(String machineName, String portWeb, String portDB, java.sql.Date date, HashMap<String, Item> itemMap) throws SQLException {
       // this.ordersList = readOrders();
        this.machineName = machineName;
-       this.port = port;
+       this.portDB = portDB;
+       this.portWeb = portWeb;
        this.date = date;
        this.conn = getConnection();
        ResultSet rsOrders = readOrders();
@@ -56,10 +59,10 @@ public class Orders {
     private Connection getConnection(){
         Connection conn = null;
         try{
-            conn = DriverManager.getConnection("jdbc:derby://" + machineName + ":" + port + "/derbyDB");
+            conn = DriverManager.getConnection("jdbc:derby://" + machineName + ":" + portDB + "/derbyDB");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Fatal Error: Database not found at port: " + port);
+            System.out.println("Fatal Error: Database not found at port: " + portDB);
             System.exit(1);
         }
         return conn;
@@ -103,9 +106,6 @@ public class Orders {
      */
     private ArrayList<OrderDetails> createOrdersList(ResultSet rsOrders, HashMap<String, Item> itemMap) throws SQLException {
         ArrayList<OrderDetails> ordersList = new ArrayList<OrderDetails>();
-        What3WordsV3 api = new What3WordsV3(W3W_API_KEY); //instantiate what.three.words API to convert to coordinates
-        //what.three.words is immediately converted to LongLat type.
-
 
         while (rsOrders.next()) {
             String orderNo = rsOrders.getString("orderNo");
@@ -113,7 +113,7 @@ public class Orders {
             String customer = rsOrders.getString("customer");
             String deliveryDate = rsOrders.getString("deliveryDate");
 
-            LongLat deliverToCoords = new LongLat(deliverTo, api); //instantiates what.three.words string to a LongLat object
+            LongLat deliverToCoords = new LongLat(deliverTo, this.machineName, this.portWeb); //instantiates what.three.words string to a LongLat object
             OrderDetails order = new OrderDetails(orderNo, deliveryDate, customer, deliverToCoords); //creates order object
             ResultSet rsDetails = readDetails(orderNo); //get the items in a given order from database
 
