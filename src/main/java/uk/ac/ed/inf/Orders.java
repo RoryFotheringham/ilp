@@ -10,7 +10,6 @@ import java.util.HashMap;
  * Orders Class - reads order data for a given date from the database into an appropriate class structure.
  */
 public class Orders {
-    private static final String W3W_API_KEY = "NDH4FINL";
     ArrayList<OrderDetails> ordersList;
     String portDB;
     String portWeb;

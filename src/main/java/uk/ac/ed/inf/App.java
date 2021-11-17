@@ -16,6 +16,6 @@ public class App
 
         Menus menus = new Menus(machineName, portWeb);
         Orders orders = new Orders(machineName, portWeb, portDB, date, menus.getItemMap());
-
+        Area area = new Area(machineName, portWeb);
     }
 }

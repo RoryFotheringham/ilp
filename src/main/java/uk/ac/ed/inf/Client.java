@@ -32,8 +32,14 @@ public class Client {
             System.exit(1); //Exit the application
         }
 
-        HttpRequest request = HttpRequest.newBuilder().uri(uriString).build(); //Builds an http request
+        HttpRequest request = null;
+        try {
+            request = HttpRequest.newBuilder().uri(uriString).build(); //Builds an http request
+        }catch (Exception e){
+            System.out.println("Fatal Error: Error connecting to server");
+            System.exit(1);
 
+        }
         //Sends the https request to the server and catches exception
         //Returns a response
         HttpResponse<String> response = null;

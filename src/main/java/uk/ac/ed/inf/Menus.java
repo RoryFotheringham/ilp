@@ -48,7 +48,7 @@ public class Menus {
     }
 
     /**
-     * Creates an map of type <String, Item> to enable a constant lookup of item cost.
+     * Creates an map of type <String, Item> to enable a constant lookup of item cost and store location.
      * @return returns the map
      */
      private HashMap<String, Item> makeItemMap(){
