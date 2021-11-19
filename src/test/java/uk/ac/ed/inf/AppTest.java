@@ -2,6 +2,8 @@ package uk.ac.ed.inf;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 public class AppTest {
@@ -189,6 +191,13 @@ public class AppTest {
         // Don't forget the standard delivery charge of 50p
         assertEquals(4 * 460 + 50, totalCost);
     }
+/*
+    @Test
+    public void testGenerateGraph(){
+        Area area = new Area("localhost", "9898");
+        Graph graph = new Graph(area);
+        HashMap<LongLat, Node> graphMap = graph.graphMap;
 
-
+    }
+*/
 }

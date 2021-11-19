@@ -6,6 +6,9 @@ import com.what3words.javawrapper.response.ConvertToCoordinates;
 import com.what3words.javawrapper.response.Coordinates;
 import com.what3words.javawrapper.response.Square;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
 /**
  * LongLat class is representation of a Longitude and Latitude coordinate pair.
  * stores values and performs basic calculations.
@@ -19,6 +22,20 @@ public class LongLat {
     public static final int HOVER_VALUE = -999;
     double longitude;
     double latitude;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LongLat longLat = (LongLat) o;
+        return Double.compare(longLat.longitude, longitude) == 0 &&
+                Double.compare(longLat.latitude, latitude) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(longitude, latitude);
+    }
 
     public LongLat(double longitude, double latitude){
         this.latitude = latitude;

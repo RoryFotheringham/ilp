@@ -1,8 +1,6 @@
 package uk.ac.ed.inf;
 
-//import com.github.filosganga.geogson.gson.GeometryAdapterFactory;
-//import com.github.filosganga.geogson.model.*;
-//import com.github.filosganga.geogson.model.positions.Positions;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -35,6 +33,11 @@ public class Area {
         this.noFlyList = createNoFlyList();
         this.landmarks = createLandmarks();
 
+    }
+
+    public boolean inNoFlyZone(LongLat longLat){
+        //todo
+        return false;
     }
 
     public ArrayList<NoFly> createNoFlyList(){
