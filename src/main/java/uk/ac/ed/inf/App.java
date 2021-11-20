@@ -15,8 +15,10 @@ public class App
 
 
         Menus menus = new Menus(machineName, portWeb);
-        Orders orders = new Orders(machineName, portWeb, portDB, date, menus.getItemMap());
+        HashMap<String, Item> itemMap = menus.getItemMap();
+        Orders orders = new Orders(machineName, portWeb, portDB, date, itemMap);
         Area area = new Area(machineName, portWeb);
-        Graph graph = new Graph(area);
+        OrderDetails testOrder = orders.ordersList.get(0);
+        Graph graph = new Graph(area, testOrder, itemMap);
     }
 }

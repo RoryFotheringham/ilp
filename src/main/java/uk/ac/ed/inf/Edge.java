@@ -1,11 +1,11 @@
 package uk.ac.ed.inf;
 
 public class Edge {
-    int angle;
+    double weight = 0;
     Node node;
 
-    public Edge(int angle, Node node){
-        this.angle = angle;
+    public Edge(double weight, Node node){
+        this.weight = weight;
         this.node = node;
     }
 }

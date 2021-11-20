@@ -35,6 +35,11 @@ public class Area {
 
     }
 
+    public boolean intersectsNoFly(Node node1, Node node2){
+        //todo
+        return false;
+    }
+
     public boolean inNoFlyZone(LongLat longLat){
         //todo
         return false;

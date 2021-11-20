@@ -5,6 +5,51 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+public class Graph{
+    HashMap<LongLat, Node> graphMap = new HashMap<>();
+    ArrayList<Node> nodeList = new ArrayList<>();
+    Area area;
+
+    public Graph(Area area, OrderDetails orderDetails, HashMap<String, Item> itemMap){
+        this.area = area;
+        ArrayList<NoFly> noFlyList = area.noFlyList;
+        ArrayList<LongLat> points = getPoints(area, orderDetails, itemMap);
+        generateGraph(points, noFlyList);
+    }
+
+
+    public void generateGraph(ArrayList<LongLat> points, ArrayList<NoFly> noFlyList){
+        ArrayList<Node> nodeList = new ArrayList<>();
+
+        for (LongLat point: points){//create all of the nodes
+            Node currentNode = new Node(point);
+            graphMap.put(point, currentNode);
+            nodeList.add(currentNode);
+        }
+
+        for (Node currentNode: nodeList){//add the nodes that can reach each other in a straight line as edges
+            for(Node otherNode: nodeList){
+                if(currentNode != otherNode && !area.intersectsNoFly(currentNode, otherNode)){
+                    double weight = currentNode.distanceTo(otherNode);
+                    Edge edge = new Edge(weight, otherNode);
+                    currentNode.addEdge(edge);
+                }
+            }
+        }
+    }
+
+    private ArrayList<LongLat> getPoints(Area area, OrderDetails orderDetails, HashMap<String, Item> itemMap){
+        ArrayList<LongLat> points = new ArrayList<>();
+        ArrayList<Landmark> landmarks = area.landmarks;
+        for(Landmark landmark: landmarks){
+            points.add(landmark.longLat);
+        }
+        return points;
+    }
+}
+
+/*
 public class Graph {
     public static final double CONFINEMENT_AREA_X1 = -3.192473; //constants outlining the confinement area in long-lat degrees
     public static final double CONFINEMENT_AREA_X2 = -3.184319;
@@ -143,7 +188,8 @@ public class Graph {
         }
         return edges;
     }
-*/
+
 
 
 }
+*/
