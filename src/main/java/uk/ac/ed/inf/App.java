@@ -19,6 +19,6 @@ public class App
         Orders orders = new Orders(machineName, portWeb, portDB, date, itemMap);
         Area area = new Area(machineName, portWeb);
         OrderDetails testOrder = orders.ordersList.get(0);
-        Graph graph = new Graph(area, testOrder, itemMap);
+        Graph graph = new Graph(area, testOrder);
     }
 }

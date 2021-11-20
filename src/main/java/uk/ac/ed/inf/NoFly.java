@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Class stores the points of a single polygon that represents a NoFly zone in the map
  */
 public class NoFly {
-    ArrayList<LongLat> noFly;
+    ArrayList<LongLat> noFly = new ArrayList<>();
 
     /**
      * basic constructor
@@ -14,6 +14,10 @@ public class NoFly {
      */
     public NoFly(ArrayList<LongLat> noFly){
         this.noFly = noFly;
+    }
+
+    public NoFly(LongLat longLat){
+        this.noFly.add(longLat);
     }
 
     /**

@@ -6,13 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.geojson.Feature;
-import org.geojson.FeatureCollection;
-import org.geojson.Geometry;
-import org.geojson.Point;
+import org.geojson.*;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class contains area information, namely the noFlyList and Landmarks
@@ -47,28 +45,28 @@ public class Area {
 
     public ArrayList<NoFly> createNoFlyList(){
         ArrayList<NoFly> newNoFlyList = new ArrayList<NoFly>();
-        //todo read from server and convert to NoFly type which is list of LongLats
+        FeatureCollection featureCollection = FeaturesFromBuildingsServer(NOFLY_LOCATION);
 
+        Geometry geom; //todo make this even barely readable and test it
+        List list;
+        ArrayList<LngLatAlt> coords;
+        for(Feature feature: featureCollection){
+            geom = (Geometry) feature.getGeometry();
+            list = geom.getCoordinates();
+            coords = (ArrayList<LngLatAlt>) list.get(0);
+            for(LngLatAlt coord: coords){
+                noFlyList.add(new NoFly(new LongLat(coord.getLongitude(), coord.getLatitude())));
+            }
 
+        }
 
         return newNoFlyList;
     }
 
+
     public ArrayList<Landmark> createLandmarks(){
         ArrayList<Landmark> newLandmarks = new ArrayList<Landmark>();
-        Client client = new Client();
-        String urlString = ("http://" + machineName + ":" + this.portWeb + "/" + LANDMARKS_LOCATION);
-        String landmarksGeojson = client.getResponse(urlString);
-
-        FeatureCollection featureCollection = null;
-        try {
-            featureCollection =
-                    new ObjectMapper().readValue(landmarksGeojson, FeatureCollection.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-
+        FeatureCollection featureCollection = FeaturesFromBuildingsServer(LANDMARKS_LOCATION);
         for(Feature feature: featureCollection){
             Point point = (Point) feature.getGeometry();
             double lng = point.getCoordinates().getLongitude();
@@ -77,6 +75,24 @@ public class Area {
         }
 
         return newLandmarks;
+    }
+
+
+    public FeatureCollection FeaturesFromBuildingsServer(String location){
+        Client client = new Client();
+        String urlString = ("http://" + machineName + ":" + this.portWeb + "/" + location);
+        String geojsonString = client.getResponse(urlString);
+
+        FeatureCollection featureCollection = null;
+        try {
+            featureCollection =
+                    new ObjectMapper().readValue(geojsonString, FeatureCollection.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            System.out.println("Fatal error ocurred whilst processing GEOJSON data received from: " + urlString);
+            System.exit(1);
+        }
+        return featureCollection;
     }
 }
 
