@@ -1,9 +1,7 @@
 package uk.ac.ed.inf;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * class generates and stores landmarks, stores and delivery location in graph structure
@@ -16,15 +14,15 @@ public class Graph{
 
     public Graph(Area area, OrderDetails orderDetails){
         ArrayList<NoFly> noFlyList = area.noFlyList;
-        generateGraph(area, orderDetails, noFlyList);
+        generateGraph(area, orderDetails);
     }
 
-    public void generateGraph(Area area, OrderDetails orderDetails, ArrayList<NoFly> noFlyList){
+    public void generateGraph(Area area, OrderDetails orderDetails){
         generateNodes(area, orderDetails);
-        generateEdges(area, noFlyList);
+        generateEdges(area);
     }
 
-    public void generateEdges(Area area, ArrayList<NoFly> noFlyList){
+    public void generateEdges(Area area){
         for (Node currentNode: this.nodeList){//add the nodes that can reach each other in a straight line as edges
             for(Node otherNode: this.nodeList){
                 if(currentNode != otherNode && !area.intersectsNoFly(currentNode, otherNode)){

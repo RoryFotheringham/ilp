@@ -8,6 +8,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.geojson.*;
 
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,65 +20,63 @@ import java.util.List;
 public class Area {
     private static final String LANDMARKS_LOCATION = "buildings/landmarks.geojson";
     private static final String NOFLY_LOCATION = "buildings/no-fly-zones.geojson";
-    ArrayList<NoFly> noFlyList;
-    ArrayList<Landmark> landmarks;
+    ArrayList<NoFly> noFlyList = new ArrayList<>();
+    ArrayList<Landmark> landmarks = new ArrayList<>();
     String portWeb;
     String machineName;
-
-
 
     public Area(String machineName, String portWeb){
         this.portWeb = portWeb;
         this.machineName = machineName;
-        this.noFlyList = createNoFlyList();
-        this.landmarks = createLandmarks();
-
+        createNoFlyList();
+        createLandmarks();
     }
 
     public boolean intersectsNoFly(Node node1, Node node2){
-        //todo
+        Point2D p = new Point2D.Double(node1.longLat.longitude, node1.longLat.latitude);
+        Point2D q = new Point2D.Double(node2.longLat.longitude, node1.longLat.latitude);
+        Line2D line = new Line2D.Double(p, q);
+        for (NoFly noFly: noFlyList){
+            if (noFly.isIntersecting(line)){
+                return true;
+            }
+        }
         return false;
     }
 
-    public boolean inNoFlyZone(LongLat longLat){
-        //todo
-        return false;
-    }
 
-    public ArrayList<NoFly> createNoFlyList(){
-        ArrayList<NoFly> newNoFlyList = new ArrayList<NoFly>();
-        FeatureCollection featureCollection = FeaturesFromBuildingsServer(NOFLY_LOCATION);
-
-        Geometry geom; //todo make this even barely readable and test it
+    public void noFlyListFromPolygon(FeatureCollection featureCollection){
+        Geometry geom;
         List list;
         ArrayList<LngLatAlt> coords;
         for(Feature feature: featureCollection){
             geom = (Geometry) feature.getGeometry();
             list = geom.getCoordinates();
             coords = (ArrayList<LngLatAlt>) list.get(0);
+            ArrayList<Point2D> points = new ArrayList<>();
             for(LngLatAlt coord: coords){
-                noFlyList.add(new NoFly(new LongLat(coord.getLongitude(), coord.getLatitude())));
+                points.add(new Point2D.Double(coord.getLongitude(), coord.getLatitude()));
             }
-
+            NoFly noFly = new NoFly(points);
+            noFlyList.add(noFly);
         }
-
-        return newNoFlyList;
     }
 
+    public void createNoFlyList(){
+        ArrayList<NoFly> newNoFlyList = new ArrayList<NoFly>();
+        FeatureCollection featureCollection = FeaturesFromBuildingsServer(NOFLY_LOCATION);
+        noFlyListFromPolygon(featureCollection);
+    }
 
-    public ArrayList<Landmark> createLandmarks(){
-        ArrayList<Landmark> newLandmarks = new ArrayList<Landmark>();
+    public void createLandmarks(){
         FeatureCollection featureCollection = FeaturesFromBuildingsServer(LANDMARKS_LOCATION);
         for(Feature feature: featureCollection){
             Point point = (Point) feature.getGeometry();
             double lng = point.getCoordinates().getLongitude();
             double lat = point.getCoordinates().getLatitude();
-            newLandmarks.add(new Landmark(new LongLat(lng, lat), feature));
+            this.landmarks.add(new Landmark(new LongLat(lng, lat), feature));
         }
-
-        return newLandmarks;
     }
-
 
     public FeatureCollection FeaturesFromBuildingsServer(String location){
         Client client = new Client();
@@ -89,7 +89,7 @@ public class Area {
                     new ObjectMapper().readValue(geojsonString, FeatureCollection.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            System.out.println("Fatal error ocurred whilst processing GEOJSON data received from: " + urlString);
+            System.out.println("Fatal error occurred whilst processing GEOJSON data received from: " + urlString);
             System.exit(1);
         }
         return featureCollection;

@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class App
 {
-    public static void main( String[] args ) throws SQLException {
+    public static void main( String[] args ){//todo get rid of the sql exception and handle it in the class
     String portDB = "1527";
     String portWeb = "9898";
     String machineName = "localhost";

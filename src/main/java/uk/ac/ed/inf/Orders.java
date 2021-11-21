@@ -25,17 +25,29 @@ public class Orders {
      * @param portWeb Port of Web Server
      * @param date The date that the orders are to be gathered from
      * @param itemMap Passed from Menus, maps the order number to item object
-     * @throws SQLException ...
      */
-    public Orders(String machineName, String portWeb, String portDB, java.sql.Date date, HashMap<String, Item> itemMap) throws SQLException {
-      // this.ordersList = readOrders();
+    public Orders(String machineName, String portWeb, String portDB, java.sql.Date date, HashMap<String, Item> itemMap){
        this.machineName = machineName;
        this.portDB = portDB;
        this.portWeb = portWeb;
        this.date = date;
        this.conn = getConnection();
-       ResultSet rsOrders = readOrders();
-       this.ordersList = createOrdersList(rsOrders, itemMap);
+       ResultSet rsOrders = null;
+
+       try {
+           rsOrders = readOrders();
+       }catch(SQLException e){
+           e.printStackTrace();
+           System.out.println("Fatal error occurred reading orders from the database. Exiting the application");
+       }
+
+       try {
+           this.ordersList = createOrdersList(rsOrders, itemMap);
+       }catch(SQLException e){
+           e.printStackTrace();
+           System.out.println("Fatal error occurred processing the order results obtained from the database. Exiting the application");
+       }
+
        closeConnection(this.conn);
     }
 
