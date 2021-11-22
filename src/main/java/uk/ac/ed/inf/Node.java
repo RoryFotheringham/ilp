@@ -1,11 +1,14 @@
 package uk.ac.ed.inf;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class Node{
+public class Node implements Comparable<Node>{
     Node parent;
     ArrayList<Edge> edges = new ArrayList<>();
     LongLat longLat;
+    double f = Double.MAX_VALUE;
+    double g = Double.MAX_VALUE;
 
     public Node(ArrayList<Edge> edges, LongLat longLat) {
         this.edges = edges;
@@ -28,6 +31,30 @@ public class Node{
         this.edges = edges;
     }
 
+    public void cleanNode(){
+        this.f = Double.POSITIVE_INFINITY;
+        this.g = Double.POSITIVE_INFINITY;
+        this.parent = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return Objects.equals(longLat, node.longLat);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(longLat);
+    }
+
+    @Override
+    public int compareTo(Node node) {
+        return Double.compare(this.f, node.f);
+    }
+
     public double distanceTo(Node node){
     double distance;
     LongLat p1 = this.longLat;
@@ -36,23 +63,4 @@ public class Node{
     return distance;
     }
 }
-/*
-public class Node {
-    Node parent;
-    ArrayList<Edge> edges = new ArrayList<Edge>();
-    Grid index;
 
-    public Node(ArrayList<Edge> edges, Grid index){
-        this.edges = edges;
-        this.index = index;
-    }
-
-    public Node(Grid index){
-        this.index = index;
-    }
-
-    public void addEdge(Edge edge){
-        this.edges.add(edge);
-    }
-}
-*/
