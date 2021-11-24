@@ -5,9 +5,17 @@ import java.util.PriorityQueue;
 
 public class PathManagement {
     ArrayList<StopSegment> stopSegments = new ArrayList<>();
+    ArrayList<Path> paths = new ArrayList<>();
 
     public PathManagement(Graph graph, Orders orders){
         generateStopSegments(graph, orders);
+        makePaths(graph);
+    }
+
+    public void makePaths(Graph graph){
+        for(StopSegment stopSegment: this.stopSegments){
+            this.paths.add(stopSegment.bestPath(graph));
+        }
     }
 
     public void generateStopSegments(Graph graph, Orders orders){

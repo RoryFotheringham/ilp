@@ -1,16 +1,17 @@
 package uk.ac.ed.inf;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.PriorityQueue;
 
 public class PathFind {
-    public static Path findPath(Graph graph, Node start, Node target){
+    public static Path findPath(Graph graph, Node start, Node target, ArrayList<Node> stops){
         graph.cleanNodes();
         Node node = aStar(start, target);
-        return pathFromAStar(node);
+        return pathFromAStar(node, stops);
     }
 
-    public static Node aStar(Node start, Node target) {
+    private static Node aStar(Node start, Node target) {
         PriorityQueue<Node> closedList = new PriorityQueue<>();
         PriorityQueue<Node> openList = new PriorityQueue<>();
 
@@ -50,13 +51,15 @@ public class PathFind {
         return null;
     }
 
-    public static Path pathFromAStar(Node node){
+    private static Path pathFromAStar(Node node, ArrayList<Node> stops){
         ArrayList<Node> pathList = new ArrayList<>();
         pathList.add(node);
-        Path path = new Path(pathList, node.g);
+
+        double totalWeight = node.g;
 
         if(node.parent == null){
-            System.out.println("Path of length zero generated");
+            Path path = new Path(pathList, node.g);
+            path.addStops(stops);
             return path;
         }
 
@@ -64,6 +67,9 @@ public class PathFind {
             pathList.add(node.parent);
             node = node.parent;
         }
+        Collections.reverse(pathList);
+        Path path = new Path(pathList, totalWeight);
+        path.addStops(stops);
         return path;
     }
 }

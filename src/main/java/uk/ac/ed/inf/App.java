@@ -18,14 +18,8 @@ public class App
         HashMap<String, Item> itemMap = menus.getItemMap();
         Orders orders = new Orders(machineName, portWeb, portDB, date, itemMap);
         Area area = new Area(machineName, portWeb);
-        OrderDetails testOrder = orders.ordersList.get(2);
         Graph graph = new Graph(area, orders);
         PathManagement pathManagement = new PathManagement(graph, orders);
-        //StopSegment stopSegment = pathManagement.stopSegments.get(0);
-        ArrayList<Path> paths = new ArrayList<>();
-        for( StopSegment stopSegment: pathManagement.stopSegments){
-            Path path = PathFind.findPath(graph, stopSegment.stores.get(0), stopSegment.destination);
-            paths.add(path);
-        }
+        ArrayList<Path> paths = pathManagement.paths;
     }
 }

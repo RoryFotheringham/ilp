@@ -3,6 +3,7 @@ package uk.ac.ed.inf;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
@@ -192,23 +193,4 @@ public class AppTest {
         // Don't forget the standard delivery charge of 50p
         assertEquals(4 * 460 + 50, totalCost);
     }
-
-    String portDB = "1527";
-    String portWeb = "9898";
-    String machineName = "localhost";
-    Date date = Date.valueOf("2023-03-31"); //placeholder params
-
-    Menus menus = new Menus(machineName, portWeb);
-    HashMap<String, Item> itemMap = menus.getItemMap();
-    Orders orders = new Orders(machineName, portWeb, portDB, date, itemMap);
-    Area area = new Area(machineName, portWeb);
-    OrderDetails testOrder = orders.ordersList.get(0);
-    Graph graph = new Graph(area, orders);
-
-    @Test
-    public void testGraph1(){
-
-    }
-
-
 }

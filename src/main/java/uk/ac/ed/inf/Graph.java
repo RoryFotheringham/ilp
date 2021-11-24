@@ -15,6 +15,10 @@ public class Graph{
     ArrayList<Node> customers = new ArrayList<>();
     ArrayList<Node> unreachableNodes = new ArrayList<>();
 
+    public Graph(ArrayList<Node> nodes){//constructor only to be used for generating test graphs.
+        this.nodeList = nodes;
+    }
+
     public Graph(Area area, Orders orders) {
         ArrayList<NoFly> noFlyList = area.noFlyList;
         boolean connected = false;
