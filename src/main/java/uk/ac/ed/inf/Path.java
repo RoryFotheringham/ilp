@@ -28,8 +28,8 @@ public class Path {
 
     public Path concatPaths(Graph graph, Path path){
         if(this.stops == null || path.stops == null){
-            throw new IllegalStateException("Path has null stops");
-        }
+            throw new IllegalArgumentException("Path has null stops");
+    }
         ArrayList<Node> newPathList = new ArrayList<>();
         ArrayList<Node> newStops = new ArrayList<>();
 

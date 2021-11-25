@@ -9,6 +9,7 @@ import java.util.HashMap;
  * class generates and stores landmarks, stores and delivery location in graph structure
  */
 public class Graph{
+    private static final LongLat APPLETON_TOWER = new LongLat(-3.186874, 55.944494);
     HashMap<LongLat, Node> graphMap;
     ArrayList<Node> nodeList;
     ArrayList<Node> stores = new ArrayList<>();
@@ -68,6 +69,7 @@ public class Graph{
     public void generateGraph(Area area, Orders orders){
         this.nodeList = new ArrayList<>();
         this.graphMap = new HashMap<>();
+        generateAppletonNode(area);
         generateLandmarkNodes(area);
         ArrayList<OrderDetails> orderDetailsList = orders.ordersList;
         for (OrderDetails orderDetails: orderDetailsList){
@@ -95,6 +97,12 @@ public class Graph{
             nodeList.add(node);
             graphMap.put(landmark.longLat, node);
         }
+    }
+
+    private void generateAppletonNode(Area area){
+        Node appletonNode = new Node(APPLETON_TOWER);
+        graphMap.put(APPLETON_TOWER, appletonNode);
+        nodeList.add(appletonNode);
     }
 
     private void generateOrderNodes(Area area, OrderDetails orderDetails){
