@@ -6,52 +6,11 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class PathFindTest {
-    ArrayList<Node> testNodes = generateTestNodes();
-    Graph testGraph = new Graph(testNodes);
+    TestObjects to = new TestObjects();
+    ArrayList<Node> testNodes = to.testNodes;
+    Graph testGraph = to.testGraph;
 
-    public static ArrayList<Node> generateTestNodes(){
-        ArrayList<Node> testNodes = new ArrayList<>();
-        Node node_0 = new Node(new LongLat(1,1));
-        Node node_1 = new Node(new LongLat(6,1));
-        Node node_2 = new Node(new LongLat(3,3));
-        Node node_3 = new Node(new LongLat(5,3));
-        Node node_4 = new Node(new LongLat(1,6));
-        Node node_5 = new Node(new LongLat(3,6));
-        Node node_6 = new Node(new LongLat(1,8));
-        Node node_7 = new Node(new LongLat(3,9));
-        Node node_8 = new Node(new LongLat(6,9));
 
-        node_0.addEdge(new Edge(5, node_1));
-        node_0.addEdge(new Edge(5, node_4));
-        node_1.addEdge(new Edge(5, node_0));
-        node_1.addEdge(new Edge(8, node_8));
-        node_2.addEdge(new Edge(2, node_3));
-        node_2.addEdge(new Edge(3, node_5));
-        node_3.addEdge(new Edge(2, node_2));
-        node_4.addEdge(new Edge(5, node_0));
-        node_4.addEdge(new Edge(2, node_5));
-        node_4.addEdge(new Edge(2, node_6));
-        node_5.addEdge(new Edge(3, node_2));
-        node_5.addEdge(new Edge(2, node_4));
-        node_5.addEdge(new Edge(3, node_7));
-        node_6.addEdge(new Edge(2, node_4));
-        node_7.addEdge(new Edge(3, node_5));
-        node_7.addEdge(new Edge(3, node_8));
-        node_8.addEdge(new Edge(3, node_7));
-        node_8.addEdge(new Edge(8, node_1));
-
-        testNodes.add(node_0);
-        testNodes.add(node_1);
-        testNodes.add(node_2);
-        testNodes.add(node_3);
-        testNodes.add(node_4);
-        testNodes.add(node_5);
-        testNodes.add(node_6);
-        testNodes.add(node_7);
-        testNodes.add(node_8);
-
-        return testNodes;
-    }
 
 
     @Test

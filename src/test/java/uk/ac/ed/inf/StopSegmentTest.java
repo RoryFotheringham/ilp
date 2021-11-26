@@ -7,7 +7,8 @@ import static org.junit.Assert.*;
 
 
 public class StopSegmentTest {
-    ArrayList<Node> testNodes = PathFindTest.generateTestNodes();
+    TestObjects to = new TestObjects();
+    ArrayList<Node> testNodes = to.testNodes;
     Graph testGraph = new Graph(testNodes);
     StopSegment testSegment_1 = generateTestStopSegment_1();
     ArrayList<Node> testList_1 = generateTestPathList_1();

@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class Graph{
     private static final LongLat APPLETON_TOWER = new LongLat(-3.186874, 55.944494);
-    HashMap<LongLat, Node> graphMap;
+    HashMap<LongLat, Node> graphMap = new HashMap<>();
     ArrayList<Node> nodeList;
     ArrayList<Node> stores = new ArrayList<>();
     ArrayList<Node> customers = new ArrayList<>();

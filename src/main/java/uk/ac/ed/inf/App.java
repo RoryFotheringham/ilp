@@ -20,6 +20,6 @@ public class App
         Area area = new Area(machineName, portWeb);
         Graph graph = new Graph(area, orders);
         PathManagement pathManagement = new PathManagement(graph, orders);
-        ArrayList<Path> paths = pathManagement.paths;
+
     }
 }
