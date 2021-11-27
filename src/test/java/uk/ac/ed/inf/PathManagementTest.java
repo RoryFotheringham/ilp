@@ -1,10 +1,6 @@
 package uk.ac.ed.inf;
 import org.junit.Test;
-
-import java.sql.Array;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

@@ -2,13 +2,14 @@ package uk.ac.ed.inf;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class PathFind {
-    public static Path findPath(Graph graph, Node start, Node target, ArrayList<Node> stops){
+    public static Path findPath(Graph graph, Node start, Node target, ArrayList<Node> stops, LinkedList<Node> destinations, LinkedList<Node> stores){
         graph.cleanNodes();
         Node node = aStar(start, target);
-        return pathFromAStar(node, stops);
+        return pathFromAStar(node, stops, destinations, stores);
     }
 
     private static Node aStar(Node start, Node target) {
@@ -51,7 +52,7 @@ public class PathFind {
         return null;
     }
 
-    private static Path pathFromAStar(Node node, ArrayList<Node> stops){
+    private static Path pathFromAStar(Node node, ArrayList<Node> stops, LinkedList<Node> stores, LinkedList<Node> destinations){
         ArrayList<Node> pathList = new ArrayList<>();
         pathList.add(node);
 
@@ -59,7 +60,9 @@ public class PathFind {
 
         if(node.parent == null){
             Path path = new Path(pathList, node.g);
-            path.addStops(stops);
+            path.setStops(stops);
+            path.setDestinations(destinations);
+            path.setStores(stores);
             return path;
         }
 
@@ -69,7 +72,9 @@ public class PathFind {
         }
         Collections.reverse(pathList);
         Path path = new Path(pathList, totalWeight);
-        path.addStops(stops);
+        path.setStops(stops);
+        path.setDestinations(destinations);
+        path.setStores(stores);
         return path;
     }
 }

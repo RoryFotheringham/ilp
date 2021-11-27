@@ -1,6 +1,7 @@
 package uk.ac.ed.inf;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class StopSegment {
     ArrayList<Node> stores = new ArrayList<>();
@@ -43,7 +44,10 @@ public class StopSegment {
             ArrayList<Node> stops_00 = new ArrayList<>();
             stops_00.add(this.stores.get(0));
             stops_00.add(this.stores.get(1));
-            Path path_00 = PathFind.findPath(graph, this.stores.get(0), this.stores.get(1), stops_00);
+            LinkedList<Node> stores_00 = new LinkedList<>();
+            stores_00.add(this.stores.get(0));
+            stores_00.add(this.stores.get(1));
+            Path path_00 = PathFind.findPath(graph, this.stores.get(0), this.stores.get(1), stops_00, null);
             ArrayList<Node> stops_01 = new ArrayList<>();
             stops_01.add(this.stores.get(1));
             stops_01.add(this.destination);

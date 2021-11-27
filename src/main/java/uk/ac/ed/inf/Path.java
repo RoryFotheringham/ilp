@@ -1,19 +1,31 @@
 package uk.ac.ed.inf;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Path {
     ArrayList<Node> pathList;
     double totalDistance;
     ArrayList<Node> stops;
+    LinkedList<Node> destinations;
+    LinkedList<Node> stores;
+
 
     public Path(ArrayList<Node> pathList, double totalDistance) {
         this.pathList = pathList;
         this.totalDistance = totalDistance;
     }
 
-    public void addStops(ArrayList<Node> stops) {
+    public void setStops(ArrayList<Node> stops) {
         this.stops = stops;
+    }
+
+    public void setDestinations(LinkedList<Node> destination) {
+        this.destinations = destination;
+    }
+
+    public void setStores(LinkedList<Node> stores) {
+        this.stores = stores;
     }
 
     private void dropHeadTail(){
@@ -33,7 +45,7 @@ public class Path {
         ArrayList<Node> newPathList = new ArrayList<>();
         ArrayList<Node> newStops = new ArrayList<>();
 
-        Path bridgePath = PathFind.findPath(graph, this.pathList.get(this.pathList.size() - 1), path.pathList.get(0), null);
+        Path bridgePath = PathFind.findPath(graph, this.pathList.get(this.pathList.size() - 1), path.pathList.get(0), null, null, null);
         double newTotalDistance = this.totalDistance + bridgePath.totalDistance + path.totalDistance;
         newPathList.addAll(this.pathList);
 
@@ -52,7 +64,7 @@ public class Path {
         newStops.addAll(this.stops);
         newStops.addAll(path.stops);
 
-        newPath.addStops(newStops);
+        newPath.setStops(newStops);
 
         return newPath;
     }
