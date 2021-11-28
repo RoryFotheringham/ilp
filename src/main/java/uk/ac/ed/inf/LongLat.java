@@ -48,6 +48,7 @@ public class LongLat {
         this.latitude = coords[1];
     }
 
+
     /**
      * method which finds the Euclidean distance between two longLat objects
      * @param longLat a longLat object

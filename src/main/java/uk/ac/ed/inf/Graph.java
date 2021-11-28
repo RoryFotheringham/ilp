@@ -51,7 +51,7 @@ public class Graph{
 
     public Node unreachableNode(){
         for(Node node: nodeList){
-            if(node.edges.isEmpty()){
+            if(node.getEdges().isEmpty()){
                 return node;
             }
         }

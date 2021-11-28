@@ -6,10 +6,10 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class PathFind {
-    public static Path findPath(Graph graph, Node start, Node target, ArrayList<Node> stops, LinkedList<Node> destinations, LinkedList<Node> stores){
+    public static Path findPath(Graph graph, Node start, Node target, ArrayList<Node> stops, LinkedList<Node> deliverTo){
         graph.cleanNodes();
         Node node = aStar(start, target);
-        return pathFromAStar(node, stops, destinations, stores);
+        return pathFromAStar(node, stops, deliverTo);
     }
 
     private static Node aStar(Node start, Node target) {
@@ -25,7 +25,7 @@ public class PathFind {
             if (n.equals(target)) {
                 return n;
             }
-            for (Edge edge : n.edges) {
+            for (Edge edge : n.getEdges()) {
                 Node m = edge.node;
                 double totalWeight = n.g + edge.weight;
 
@@ -52,7 +52,7 @@ public class PathFind {
         return null;
     }
 
-    private static Path pathFromAStar(Node node, ArrayList<Node> stops, LinkedList<Node> stores, LinkedList<Node> destinations){
+    private static Path pathFromAStar(Node node, ArrayList<Node> stops, LinkedList<Node> deliverTo){
         ArrayList<Node> pathList = new ArrayList<>();
         pathList.add(node);
 
@@ -61,8 +61,7 @@ public class PathFind {
         if(node.parent == null){
             Path path = new Path(pathList, node.g);
             path.setStops(stops);
-            path.setDestinations(destinations);
-            path.setStores(stores);
+            path.setDestinations(deliverTo);
             return path;
         }
 
@@ -73,8 +72,7 @@ public class PathFind {
         Collections.reverse(pathList);
         Path path = new Path(pathList, totalWeight);
         path.setStops(stops);
-        path.setDestinations(destinations);
-        path.setStores(stores);
+        path.setDestinations(deliverTo);
         return path;
     }
 }

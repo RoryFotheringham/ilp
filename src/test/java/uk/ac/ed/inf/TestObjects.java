@@ -3,6 +3,7 @@ package uk.ac.ed.inf;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class TestObjects {
     static final LongLat APPLETON_LONGLAT = new LongLat(-3.186874, 55.944494);
@@ -12,11 +13,13 @@ public class TestObjects {
     Path path_2;
     Path path_3;
     Path path_4;
+    Path path_small;
     ArrayList<Path> listOfPathsTest142;
     ArrayList<Path> listOfPathsTest124;
     ArrayList<Node> testNodes;
     PathManagement testPathManagement;
     PathManagement pathManagement;
+
 
 
     public TestObjects() {
@@ -39,6 +42,7 @@ public class TestObjects {
         this.path_2 = generateTestPath_2(testNodes);
         this.path_3 = generateTestPath_3(testNodes);
         this.path_4 = generateTestPath_4(testNodes);
+        this.path_small = generateTestPath_small();
         this.listOfPathsTest142 = generateListOfPathsTest142();
         this.listOfPathsTest124 = generateListOfPathsTest124();
         this.testPathManagement = generateTestPathManagement(graph, orders);
@@ -119,6 +123,28 @@ public class TestObjects {
 
         return testNodes;
     }
+    private Path generateTestPath_small(){
+        ArrayList<Node> testNodes = new ArrayList<>();
+        Node node_0 = new Node(new LongLat(1,1));
+        Node node_1 = new Node(new LongLat(1-(0.00015*6),1));
+        node_0.addEdge(new Edge(5, node_1));
+        testNodes.add(node_0);
+        testNodes.add(node_1);
+
+        ArrayList<Node> pathNodes = new ArrayList<>();
+        ArrayList<Node> stops = new ArrayList<>();
+        pathNodes.add(testNodes.get(0));
+        pathNodes.add(testNodes.get(1));
+        Path path = new Path(pathNodes, 2);
+
+        stops.add(testNodes.get(0));
+        stops.add(testNodes.get(1));
+        LinkedList<Node> destination = new LinkedList<>();
+        destination.add(testNodes.get(0));
+        path.setDestinations(destination);
+        path.setStops(stops);
+        return path;
+    }
 
     private Path generateTestPath_4(ArrayList<Node> testNodes){
         ArrayList<Node> pathNodes_4 = new ArrayList<>();
@@ -129,7 +155,7 @@ public class TestObjects {
 
         stops_4.add(testNodes.get(4));
         stops_4.add(testNodes.get(5));
-        path_4.addStops(stops_4);
+        path_4.setStops(stops_4);
 
         return path_4;
     }
@@ -143,7 +169,7 @@ public class TestObjects {
 
         stops_3.add(testNodes.get(5));
         stops_3.add(testNodes.get(2));
-        path_3.addStops(stops_3);
+        path_3.setStops(stops_3);
 
         return path_3;
     }
@@ -157,7 +183,7 @@ public class TestObjects {
 
         stops_2.add(testNodes.get(2));
         stops_2.add(testNodes.get(3));
-        path_2.addStops(stops_2);
+        path_2.setStops(stops_2);
 
         return path_2;
     }
@@ -172,7 +198,7 @@ public class TestObjects {
 
         stops_1.add(testNodes.get(1));
         stops_1.add(testNodes.get(4));
-        path_1.addStops(stops_1);
+        path_1.setStops(stops_1);
 
         return path_1;
     }

@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class Node implements Comparable<Node>{
     Node parent;
-    ArrayList<Edge> edges = new ArrayList<>();
-    LongLat longLat;
+    private ArrayList<Edge> edges = new ArrayList<>();
+    private LongLat longLat;
     double f = Double.MAX_VALUE;
     double g = Double.MAX_VALUE;
 
@@ -29,6 +29,14 @@ public class Node implements Comparable<Node>{
 
     public void setEdges(ArrayList<Edge> edges) {
         this.edges = edges;
+    }
+
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
+
+    public LongLat getLongLat() {
+        return longLat;
     }
 
     public void cleanNode(){

@@ -46,6 +46,6 @@ public class StopSegmentTest {
     @Test
     public void bestPathTest(){
         Path actual = generateTestStopSegment_1().bestPath(testGraph);
-        assertEquals(testList_1, actual.pathList);
+        assertEquals(testList_1, actual.getPathList());
     }
 }

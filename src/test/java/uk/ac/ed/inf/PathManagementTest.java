@@ -13,7 +13,7 @@ public class PathManagementTest {
     public void absolutePathStartAppletonTest(){
         PathManagement pm = to.pathManagement;
         Path absolutePath = pm.absolutePath;
-        Node actual = absolutePath.pathList.get(0);
+        Node actual = absolutePath.getPathList().get(0);
         Node expected = to.APPLETON_NODE;
         assertEquals(expected, actual);
     }
@@ -21,7 +21,7 @@ public class PathManagementTest {
     public void absolutePathFinishAppletonTest(){
         PathManagement pm = to.pathManagement;
         Path absolutePath = pm.absolutePath;
-        Node actual = absolutePath.pathList.get(absolutePath.pathList.size() -1);
+        Node actual = absolutePath.getPathList().get(absolutePath.getPathList().size() -1);
         Node expected = to.APPLETON_NODE;
         assertEquals(expected, actual);
     }
@@ -30,7 +30,7 @@ public class PathManagementTest {
     public void absolutePathReachesAllStopsInOrder(){
         PathManagement pm = to.pathManagement;
         Path absolutePath = pm.absolutePath;
-        ArrayList<Node> pathList = absolutePath.pathList;
+        ArrayList<Node> pathList = absolutePath.getPathList();
         ArrayList<Node> stopsArr = absolutePath.stops;
         LinkedList<Node> stopsLL = new LinkedList<>();
         stopsLL.addAll(stopsArr);

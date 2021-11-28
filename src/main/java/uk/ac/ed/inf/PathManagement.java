@@ -65,7 +65,7 @@ public class PathManagement {
         ArrayList<Node> appletonPathList = new ArrayList<>();
         appletonPathList.add(graph.graphMap.get(APPLETON_TOWER_LONGLAT));
         Path appletonPath = new Path(appletonPathList, 0);
-        appletonPath.addStops(appletonPathList);
+        appletonPath.setStops(appletonPathList);
         sortedPaths.add(appletonPath);
         for(int i = 0; i < this.paths.size(); i++){
             ArrayList<Node> stops = sortedPaths.getLast().stops;

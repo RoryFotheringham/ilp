@@ -33,8 +33,8 @@ public class Area {
     }
 
     public boolean intersectsNoFly(Node node1, Node node2){
-        Point2D p = new Point2D.Double(node1.longLat.longitude, node1.longLat.latitude);
-        Point2D q = new Point2D.Double(node2.longLat.longitude, node1.longLat.latitude);
+        Point2D p = new Point2D.Double(node1.getLongLat().longitude, node1.getLongLat().latitude);
+        Point2D q = new Point2D.Double(node2.getLongLat().longitude, node1.getLongLat().latitude);
         Line2D line = new Line2D.Double(p, q);
         for (NoFly noFly: noFlyList){
             if (noFly.isIntersecting(line)){

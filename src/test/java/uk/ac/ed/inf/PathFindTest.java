@@ -15,17 +15,17 @@ public class PathFindTest {
 
     @Test
     public void findPathPathListTest() {
-        Path path = PathFind.findPath(testGraph, testNodes.get(0), testNodes.get(7), null);
+        Path path = PathFind.findPath(testGraph, testNodes.get(0), testNodes.get(7), null, null);
         ArrayList<Node> expected = new ArrayList<>();
         expected.add(testNodes.get(0));
         expected.add(testNodes.get(4));
         expected.add(testNodes.get(5));
         expected.add(testNodes.get(7));
-        assertEquals(expected, path.pathList);
+        assertEquals(expected, path.getPathList());
     }
     @Test
     public void findPathDistanceTest(){
-        Path path = PathFind.findPath(testGraph, testNodes.get(1), testNodes.get(5), null);
+        Path path = PathFind.findPath(testGraph, testNodes.get(1), testNodes.get(5), null, null);
         assertEquals(12, path.totalDistance, .01);
     }
     @Test
@@ -34,29 +34,29 @@ public class PathFindTest {
         stops.add(testNodes.get(3));
         stops.add(testNodes.get(2));
         stops.add(testNodes.get(7));
-        Path path = PathFind.findPath(testGraph, testNodes.get(3), testNodes.get(7), stops);
+        Path path = PathFind.findPath(testGraph, testNodes.get(3), testNodes.get(7), stops, null);
 
         assertEquals(stops, path.stops);
     }
     @Test
     public void findPathSingletonPathTest(){
-        Path path = PathFind.findPath(testGraph, testNodes.get(3), testNodes.get(3), null);
+        Path path = PathFind.findPath(testGraph, testNodes.get(3), testNodes.get(3), null, null);
         ArrayList<Node> expected = new ArrayList<Node>();
         expected.add(testNodes.get(3));
-        assertEquals(expected, path.pathList);
+        assertEquals(expected, path.getPathList());
     }
     @Test
     public void findPathSingletonDistanceTest(){
-        Path path = PathFind.findPath(testGraph, testNodes.get(3), testNodes.get(3), null);
+        Path path = PathFind.findPath(testGraph, testNodes.get(3), testNodes.get(3), null, null);
         assertEquals(0, path.totalDistance, .01);
     }
     @Test
     public void findPathTuplePathTest(){
-        Path path = PathFind.findPath(testGraph, testNodes.get(2), testNodes.get(3), null);
+        Path path = PathFind.findPath(testGraph, testNodes.get(2), testNodes.get(3), null, null);
         ArrayList<Node> expected = new ArrayList<Node>();
         expected.add(testNodes.get(2));
         expected.add(testNodes.get(3));
-        assertEquals(expected, path.pathList);
+        assertEquals(expected, path.getPathList());
     }
 }
 
