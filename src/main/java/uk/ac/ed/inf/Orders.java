@@ -1,7 +1,5 @@
 package uk.ac.ed.inf;
 
-import com.what3words.javawrapper.What3WordsV3;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,12 +8,12 @@ import java.util.HashMap;
  * Orders Class - reads order data for a given date from the database into an appropriate class structure.
  */
 public class Orders {
-    ArrayList<OrderDetails> ordersList;
-    String portDB;
-    String portWeb;
-    String machineName;
-    java.sql.Date date;
-    Connection conn;
+    private ArrayList<OrderDetails> ordersList;
+    private String portDB;
+    private String portWeb;
+    private String machineName;
+    private java.sql.Date date;
+    private Connection conn;
 
     /**
      * The only constructor for Orders class
@@ -134,10 +132,14 @@ public class Orders {
              */
             while (rsDetails.next()){
                 String itemName = rsDetails.getString("item");
-                order.items.add(itemMap.get(itemName)); //add items into the order object
+                order.getItems().add(itemMap.get(itemName)); //add items into the order object
             }
             ordersList.add(order);
         }
+        return ordersList;
+    }
+
+    public ArrayList<OrderDetails> getOrdersList() {
         return ordersList;
     }
 }

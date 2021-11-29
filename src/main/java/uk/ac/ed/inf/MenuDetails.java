@@ -7,7 +7,19 @@ import java.util.HashMap;
  * An ArrayList of MenuDetails is contained within the Menus class.
  */
 public class MenuDetails {
-    String name;
-    String location;
-    ArrayList<Item> menu;
+    private String name;
+    private String location;
+    private ArrayList<Item> menu;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public ArrayList<Item> getMenu() {
+        return menu;
+    }
 }

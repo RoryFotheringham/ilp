@@ -69,9 +69,9 @@ public class PathTest {
     public void concatPathsPreserveStopsTest(){
         Path actualPath = path_1.concatPaths(testGraph, path_2);
         ArrayList<Node> expected = new ArrayList<>();
-        expected.addAll(path_1.stops);
-        expected.addAll(path_2.stops);
-        assertEquals(expected, actualPath.stops);
+        expected.addAll(path_1.getStops());
+        expected.addAll(path_2.getStops());
+        assertEquals(expected, actualPath.getStops());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class PathTest {
         expected.add(testNodes.get(1));
         expected.add(testNodes.get(4));
         expected.add(testNodes.get(5));
-        assertEquals(expected, actualPath.stops);
+        assertEquals(expected, actualPath.getStops());
     }
 
 
@@ -148,7 +148,7 @@ public class PathTest {
         Path fullPath = path_1.concatPaths(testGraph, path_3);
 
         Path actual = fullPath.popSubPath();
-        assertEquals(path_1.stops, actual.stops);
+        assertEquals(path_1.getStops(), actual.getStops());
     }
 
     @Test

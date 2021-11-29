@@ -2,10 +2,6 @@ package uk.ac.ed.inf;
 
 import org.junit.Test;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import static org.junit.Assert.*;
 
 public class AppTest {
@@ -56,8 +52,8 @@ public class AppTest {
 
 
     private boolean approxEq(LongLat l1, LongLat l2) {
-        return approxEq(l1.longitude, l2.longitude) &&
-                approxEq(l1.latitude, l2.latitude);
+        return approxEq(l1.getLongitude(), l2.getLongitude()) &&
+                approxEq(l1.getLatitude(), l2.getLatitude());
     }
 
     @Test

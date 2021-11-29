@@ -37,7 +37,7 @@ public class TestObjects {
         this.pathManagement = new PathManagement(graph, orders);
         this.testNodes = generateTestNodes();
         this.testGraph = new Graph(testNodes);
-        this.testGraph.graphMap.put(APPLETON_LONGLAT, APPLETON_NODE);
+        //this.testGraph.graphMap.put(APPLETON_LONGLAT, APPLETON_NODE);
         this.path_1 = generateTestPath_1(testNodes);
         this.path_2 = generateTestPath_2(testNodes);
         this.path_3 = generateTestPath_3(testNodes);

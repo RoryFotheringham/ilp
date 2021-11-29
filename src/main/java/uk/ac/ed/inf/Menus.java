@@ -2,7 +2,6 @@ package uk.ac.ed.inf;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.what3words.javawrapper.What3WordsV3;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class Menus {
     String port;
     String machineName;
     ArrayList<MenuDetails> menuDetailsList;//Contains menu data which is stored on instantiation of Menus class.
-    HashMap<String, Item> itemMap;
+    private HashMap<String, Item> itemMap;
 
 
     public Menus(String machineName, String port){
@@ -54,11 +53,11 @@ public class Menus {
      private HashMap<String, Item> makeItemMap(){
         HashMap<String, Item> itemMap = new HashMap<String, Item>();
         for (MenuDetails menuDetails : menuDetailsList){ //Iterates through ArrayList of MenuDetails
-            for(Item item : menuDetails.menu){
-                item.store = menuDetails.name; //Assign the name of the store to the store field in Item object
+            for(Item item : menuDetails.getMenu()){
+                item.setStore(menuDetails.getName()); //Assign the name of the store to the store field in Item object
 
-                item.longLat = new LongLat(menuDetails.location, machineName, port);
-                itemMap.put(item.item, item); //Add each item object to the map
+                item.setLongLat(new LongLat(menuDetails.getLocation(), machineName, port));
+                itemMap.put(item.getItem(), item); //Add each item object to the map
             }
         }
         return itemMap;
@@ -72,8 +71,8 @@ public class Menus {
     public int getDeliveryCost(String ... requestedItems){
         int totalCost = DELIVERY_CHARGE;
         for (String itemName : requestedItems){
-            Item item = itemMap.get(itemName);
-            totalCost += item.pence;
+            Item item = getItemMap().get(itemName);
+            totalCost += item.getPence();
         }
         return totalCost;
     }

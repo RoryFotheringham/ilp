@@ -36,7 +36,7 @@ public class PathFindTest {
         stops.add(testNodes.get(7));
         Path path = PathFind.findPath(testGraph, testNodes.get(3), testNodes.get(7), stops, null, null);
 
-        assertEquals(stops, path.stops);
+        assertEquals(stops, path.getStops());
     }
     @Test
     public void findPathSingletonPathTest(){

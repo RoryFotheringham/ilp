@@ -31,7 +31,7 @@ public class PathManagementTest {
         PathManagement pm = to.pathManagement;
         Path absolutePath = pm.absolutePath;
         ArrayList<Node> pathList = absolutePath.getPathList();
-        ArrayList<Node> stopsArr = absolutePath.stops;
+        ArrayList<Node> stopsArr = absolutePath.getStops();
         LinkedList<Node> stopsLL = new LinkedList<>();
         stopsLL.addAll(stopsArr);
         boolean flag = true;

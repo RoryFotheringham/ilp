@@ -4,12 +4,12 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 public class OrderDetails {//todo investigate Date type and LongLat type for these vals
-    String orderNo;
-    String deliveryDate;
-    ArrayList<Item> items;
-    String customer;
-    LongLat deliverTo;
-    String what3Words;
+    private String orderNo;
+    private String deliveryDate;
+    private ArrayList<Item> items;
+    private String customer;
+    private LongLat deliverTo;
+    private String what3Words;
 
 public OrderDetails(String orderNo, String deliveryDate, String customer, LongLat deliverTo, String what3Words) {
     this.deliveryDate = deliveryDate;
@@ -21,4 +21,28 @@ public OrderDetails(String orderNo, String deliveryDate, String customer, LongLa
 
     }
 
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public String getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public LongLat getDeliverTo() {
+        return deliverTo;
+    }
+
+    public String getWhat3Words() {
+        return what3Words;
+    }
 }

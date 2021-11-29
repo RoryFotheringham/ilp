@@ -28,13 +28,16 @@ public class PathManagement {
     }
 
     public void generateStopSegments(Graph graph, Orders orders){
-        for(OrderDetails orderDetails: orders.ordersList){
+        for(OrderDetails orderDetails: orders.getOrdersList()){
             StopSegment stopSegment = new StopSegment();
-            Node destinationNode = graph.graphMap.get(orderDetails.deliverTo);
+            //Node destinationNode = graph.graphMap.get(orderDetails.getDeliverTo());
+            Node destinationNode = graph.graphMapQuery(orderDetails.getDeliverTo());
             stopSegment.setDestination(destinationNode);
-            stopSegment.setOrderNo(orderDetails.orderNo);
-            for(Item item: orderDetails.items){
-                Node itemNode = graph.graphMap.get(item.longLat);
+            stopSegment.setOrderNo(orderDetails.getOrderNo());
+            for(Item item: orderDetails.getItems()){
+                //Node itemNode = graph.graphMap.get(item.longLat);
+                Node itemNode = graph.graphMapQuery(item.getLongLat());
+
                 if(!stopSegment.stores.contains(itemNode)) {
                     stopSegment.stores.add(itemNode);
                 }
@@ -70,7 +73,7 @@ public class PathManagement {
         LinkedList<Path> sortedPaths = new LinkedList<>();
         ArrayList<Node> appletonPathList = new ArrayList<>();
         LinkedList<String> returnOrderNoList = new LinkedList<>();
-        appletonPathList.add(graph.graphMap.get(APPLETON_TOWER_LONGLAT));
+        appletonPathList.add(graph.graphMapQuery(APPLETON_TOWER_LONGLAT));
         Path appletonPath = new Path(appletonPathList, 0);//adds appleton to start of path
         //note that the first appletonNode does not have a destination but the second 'appletonPathDestination' does.
         //this is because a node with a destination tells generateSubFlightPath to hover;

@@ -17,9 +17,10 @@ public class App
         Menus menus = new Menus(machineName, portWeb);
         HashMap<String, Item> itemMap = menus.getItemMap();
         Orders orders = new Orders(machineName, portWeb, portDB, date, itemMap);
+        Deliveries deliveries = new Deliveries(orders.getOrdersList());
         Area area = new Area(machineName, portWeb);
         Graph graph = new Graph(area, orders);
         PathManagement pathManagement = new PathManagement(graph, orders);
-        FlightPath flightPath = new FlightPath(graph, pathManagement.getAbsolutePath());
+        FlightPath flightPath = new FlightPath(graph, pathManagement.getAbsolutePath(), deliveries);
     }
 }

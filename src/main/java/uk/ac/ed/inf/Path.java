@@ -6,8 +6,8 @@ import java.util.LinkedList;
 public class Path {
     private ArrayList<Node> pathList;
     double totalDistance;
-    ArrayList<Node> stops;
-    LinkedList<Node> destinations = new LinkedList<>();
+    private ArrayList<Node> stops;
+    private LinkedList<Node> destinations = new LinkedList<>();
     LinkedList<String> orderNos = new LinkedList<>();
 
     public Path(ArrayList<Node> pathList, double totalDistance) {
@@ -17,6 +17,14 @@ public class Path {
     public String popOrderNos(){
         return this.orderNos.pop();
     }
+    public LinkedList<String> getOrderNos(){
+        return this.orderNos;
+    }
+
+    public String peekOrderNos(){
+        return orderNos.getFirst();
+    }
+
     public void setOrderNos(LinkedList<String> orderNos){
         this.orderNos = orderNos;
     }

@@ -1,6 +1,5 @@
 package uk.ac.ed.inf;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,11 +9,10 @@ import java.util.HashMap;
  */
 public class Graph{
     private static final LongLat APPLETON_TOWER = new LongLat(-3.186874, 55.944494);
-    HashMap<LongLat, Node> graphMap = new HashMap<>();
-    ArrayList<Node> nodeList;
-    ArrayList<Node> stores = new ArrayList<>();
-    ArrayList<Node> customers = new ArrayList<>();
-    ArrayList<Node> unreachableNodes = new ArrayList<>();
+    private HashMap<LongLat, Node> graphMap = new HashMap<>();
+    private ArrayList<Node> nodeList;
+    private ArrayList<Node> stores = new ArrayList<>();
+    private ArrayList<Node> customers = new ArrayList<>();
 
     public Graph(ArrayList<Node> nodes){//constructor only to be used for generating test graphs.
         this.nodeList = nodes;
@@ -22,14 +20,7 @@ public class Graph{
 
     public Graph(Area area, Orders orders) {
         ArrayList<NoFly> noFlyList = area.noFlyList;
-        boolean connected = false;
         generateGraph(area, orders);
-        connected = isConnected();
-        while(!connected){
-            Node node = nodeList.get(0);//todo choose a better node
-            generateBridgeNode(area, node);
-            connected = isConnected();
-        }
     }
 
     public Node graphMapQuery(LongLat longLat){
@@ -42,40 +33,12 @@ public class Graph{
         }
     }
 
-    private void generateBridgeNode(Area area, Node unreachable) {
-        ArrayList<Double> distances = new ArrayList<>();
-        for(int i = 0; i < nodeList.size();){
-            Node node = nodeList.get(i);
-            double distance = node.distanceTo(unreachable);
-            distances.add(distance);
-        }
-        //todo make this function actually generate a bridge node
-        //todo perhaps we don't need the closest node - maybe it's better to work with the landmarks.
-    }
-
-    public Node unreachableNode(){
-        for(Node node: nodeList){
-            if(node.getEdges().isEmpty()){
-                return node;
-            }
-        }
-        return null;
-    }
-
-    public boolean isConnected(){
-        //todo check whether graph is a connected graph.
-        // need to use DFS.
-        // right now we assume that graph is connected
-        return true;
-    }
-
-
     public void generateGraph(Area area, Orders orders){
         this.nodeList = new ArrayList<>();
         this.graphMap = new HashMap<>();
         generateAppletonNode(area);
         generateLandmarkNodes(area);
-        ArrayList<OrderDetails> orderDetailsList = orders.ordersList;
+        ArrayList<OrderDetails> orderDetailsList = orders.getOrdersList();
         for (OrderDetails orderDetails: orderDetailsList){
             generateOrderNodes(area, orderDetails);
         }
@@ -111,9 +74,9 @@ public class Graph{
     }
 
     private void generateOrderNodes(Area area, OrderDetails orderDetails){
-        ArrayList<Item> items = orderDetails.items;
+        ArrayList<Item> items = orderDetails.getItems();
         for(Item item: items){
-            LongLat itemLongLat = item.longLat;
+            LongLat itemLongLat = item.getLongLat();
             if(!graphMap.containsKey(itemLongLat)){
                 Node storeNode = new Node(itemLongLat);
                 this.stores.add(storeNode);
@@ -122,10 +85,10 @@ public class Graph{
             }
         }
 
-        if(!graphMap.containsKey(orderDetails.deliverTo)) {
-            Node destinationNode = new Node(orderDetails.deliverTo);
+        if(!graphMap.containsKey(orderDetails.getDeliverTo())) {
+            Node destinationNode = new Node(orderDetails.getDeliverTo());
             this.customers.add(destinationNode);
-            this.graphMap.put(orderDetails.deliverTo, destinationNode);
+            this.graphMap.put(orderDetails.getDeliverTo(), destinationNode);
             nodeList.add(destinationNode);
         }
     }

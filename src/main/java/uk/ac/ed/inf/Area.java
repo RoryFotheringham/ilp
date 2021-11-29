@@ -3,14 +3,10 @@ package uk.ac.ed.inf;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import org.geojson.*;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +29,8 @@ public class Area {
     }
 
     public boolean intersectsNoFly(Node node1, Node node2){
-        Point2D p = new Point2D.Double(node1.getLongLat().longitude, node1.getLongLat().latitude);
-        Point2D q = new Point2D.Double(node2.getLongLat().longitude, node1.getLongLat().latitude);
+        Point2D p = new Point2D.Double(node1.getLongLat().getLongitude(), node1.getLongLat().getLatitude());
+        Point2D q = new Point2D.Double(node2.getLongLat().getLongitude(), node1.getLongLat().getLatitude());
         Line2D line = new Line2D.Double(p, q);
         for (NoFly noFly: noFlyList){
             if (noFly.isIntersecting(line)){
