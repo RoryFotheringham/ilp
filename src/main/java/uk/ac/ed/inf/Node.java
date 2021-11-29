@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Node implements Comparable<Node>{
-    Node parent;
+    private Node parent;
     private ArrayList<Edge> edges = new ArrayList<>();
     private LongLat longLat;
-    double f = Double.MAX_VALUE;
-    double g = Double.MAX_VALUE;
+    private double f = Double.MAX_VALUE;
+    private double g = Double.MAX_VALUE;
+    private String name;
 
     public Node(ArrayList<Edge> edges, LongLat longLat) {
         this.edges = edges;
@@ -17,6 +18,10 @@ public class Node implements Comparable<Node>{
 
     public Node(LongLat longLat){
         this.longLat = longLat;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setParent(Node parent) {
@@ -40,9 +45,9 @@ public class Node implements Comparable<Node>{
     }
 
     public void cleanNode(){
-        this.f = Double.POSITIVE_INFINITY;
-        this.g = Double.POSITIVE_INFINITY;
-        this.parent = null;
+        this.setF(Double.POSITIVE_INFINITY);
+        this.setG(Double.POSITIVE_INFINITY);
+        this.setParent(null);
     }
 
     @Override
@@ -60,7 +65,7 @@ public class Node implements Comparable<Node>{
 
     @Override
     public int compareTo(Node node) {
-        return Double.compare(this.f, node.f);
+        return Double.compare(this.getF(), node.getF());
     }
 
     public double distanceTo(Node node){
@@ -69,6 +74,26 @@ public class Node implements Comparable<Node>{
     LongLat p2 = node.longLat;
     distance = p1.distanceTo(p2);
     return distance;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public double getF() {
+        return f;
+    }
+
+    public void setF(double f) {
+        this.f = f;
+    }
+
+    public double getG() {
+        return g;
+    }
+
+    public void setG(double g) {
+        this.g = g;
     }
 }
 

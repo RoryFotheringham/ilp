@@ -123,9 +123,9 @@ public class Orders {
             String deliverTo = rsOrders.getString("deliverTo");
             String customer = rsOrders.getString("customer");
             String deliveryDate = rsOrders.getString("deliveryDate");
-
+            String what3Words = deliverTo;
             LongLat deliverToCoords = new LongLat(deliverTo, this.machineName, this.portWeb); //instantiates what.three.words string to a LongLat object
-            OrderDetails order = new OrderDetails(orderNo, deliveryDate, customer, deliverToCoords); //creates order object
+            OrderDetails order = new OrderDetails(orderNo, deliveryDate, customer, deliverToCoords, what3Words); //creates order object
             ResultSet rsDetails = readDetails(orderNo); //get the items in a given order from database
 
             /*

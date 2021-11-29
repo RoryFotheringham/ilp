@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 public class PathManagement {
     private static final LongLat APPLETON_TOWER_LONGLAT = new LongLat(-3.186874, 55.944494);
+    private static final String RETURN_ORDER_NO = "hometime";
     ArrayList<StopSegment> stopSegments = new ArrayList<>();
     ArrayList<Path> paths = new ArrayList<>();
     Path absolutePath;
@@ -14,6 +15,10 @@ public class PathManagement {
         generateStopSegments(graph, orders);
         makePaths(graph);
         findAbsolutePath(graph);
+    }
+
+    public Path getAbsolutePath() {
+        return absolutePath;
     }
 
     public void makePaths(Graph graph){
@@ -27,6 +32,7 @@ public class PathManagement {
             StopSegment stopSegment = new StopSegment();
             Node destinationNode = graph.graphMap.get(orderDetails.deliverTo);
             stopSegment.setDestination(destinationNode);
+            stopSegment.setOrderNo(orderDetails.orderNo);
             for(Item item: orderDetails.items){
                 Node itemNode = graph.graphMap.get(item.longLat);
                 if(!stopSegment.stores.contains(itemNode)) {
@@ -41,19 +47,19 @@ public class PathManagement {
         //makes the assumption that paths.pathLis.get(0) is always equal to paths.get(0).stops.get(0)
         //as the first stop in a path will always be equal to the first node - this is verified in pathManagementTest
         //todo actually verify the above lmao
-        double minDistance = node.distanceTo(unsortedPaths.get(0).stops.get(0));
+        double minDistance = node.distanceTo(unsortedPaths.get(0).getStops().get(0));
         Path minDistancePath = unsortedPaths.get(0);
         int minDistanceIndex = 0;
         int i = 0;
         for (Path path: unsortedPaths){
-            Node candidateNode = path.stops.get(0);
+            Node candidateNode = path.getStops().get(0);
             double candidateDistance = node.distanceTo(candidateNode);
             if(candidateDistance < minDistance && !node.equals(candidateNode)){
                 minDistance = candidateDistance;
                 minDistancePath = path;
                 minDistanceIndex = i;
-                i++;
             }
+            i++;
         }
         unsortedPaths.remove(minDistanceIndex);
         return minDistancePath;
@@ -63,17 +69,25 @@ public class PathManagement {
         LinkedList<Path> unsortedPaths = new LinkedList<>(this.paths);
         LinkedList<Path> sortedPaths = new LinkedList<>();
         ArrayList<Node> appletonPathList = new ArrayList<>();
+        LinkedList<String> returnOrderNoList = new LinkedList<>();
         appletonPathList.add(graph.graphMap.get(APPLETON_TOWER_LONGLAT));
-        Path appletonPath = new Path(appletonPathList, 0);
+        Path appletonPath = new Path(appletonPathList, 0);//adds appleton to start of path
+        //note that the first appletonNode does not have a destination but the second 'appletonPathDestination' does.
+        //this is because a node with a destination tells generateSubFlightPath to hover;
         appletonPath.setStops(appletonPathList);
         sortedPaths.add(appletonPath);
         for(int i = 0; i < this.paths.size(); i++){
-            ArrayList<Node> stops = sortedPaths.getLast().stops;
-            Node node = stops.get(stops.size() - 1);
+            ArrayList<Node> stops = sortedPaths.getLast().getStops();
+            Node node = stops.get(stops.size() - 1); //get final stop
             Path nextPath = popClosestPathStart(unsortedPaths, node);
             sortedPaths.add(nextPath);
         }
-        sortedPaths.add(appletonPath);
+        Path appletonPathDestination = new Path(appletonPathList, 0);
+        appletonPathDestination.setStops(appletonPathList);
+        appletonPathDestination.setDestinations(new LinkedList<Node>(appletonPathList));
+        returnOrderNoList.add(RETURN_ORDER_NO);
+        appletonPathDestination.setOrderNos(returnOrderNoList);
+        sortedPaths.add(appletonPathDestination);
         return sortedPaths;
     }
 
@@ -82,7 +96,8 @@ public class PathManagement {
         while(sortedPaths.size() > 1){
             Path path_1 = sortedPaths.pop();
             Path path_2 = sortedPaths.pop();
-            sortedPaths.push(path_1.concatPaths(graph, path_2));
+            Path joinedPath = path_1.concatPaths(graph, path_2);
+            sortedPaths.push(joinedPath);
         }
         this.absolutePath = sortedPaths.peek();
     }

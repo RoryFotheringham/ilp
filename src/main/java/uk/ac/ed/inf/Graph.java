@@ -32,6 +32,10 @@ public class Graph{
         }
     }
 
+    public Node graphMapQuery(LongLat longLat){
+        return graphMap.get(longLat);
+    }
+
     public void cleanNodes(){
         for (Node node: nodeList){
             node.cleanNode();
@@ -101,6 +105,7 @@ public class Graph{
 
     private void generateAppletonNode(Area area){
         Node appletonNode = new Node(APPLETON_TOWER);
+        appletonNode.setName("appleton");
         graphMap.put(APPLETON_TOWER, appletonNode);
         nodeList.add(appletonNode);
     }

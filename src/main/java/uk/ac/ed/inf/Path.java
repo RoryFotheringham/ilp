@@ -8,10 +8,25 @@ public class Path {
     double totalDistance;
     ArrayList<Node> stops;
     LinkedList<Node> destinations = new LinkedList<>();
+    LinkedList<String> orderNos = new LinkedList<>();
 
     public Path(ArrayList<Node> pathList, double totalDistance) {
         this.pathList = pathList;
         this.totalDistance = totalDistance;
+    }
+    public String popOrderNos(){
+        return this.orderNos.pop();
+    }
+    public void setOrderNos(LinkedList<String> orderNos){
+        this.orderNos = orderNos;
+    }
+
+    public void addOrderNos(String orderNo){
+        this.orderNos.add(orderNo);
+    }
+
+    public double getTotalDistance() {
+        return totalDistance;
     }
 
     public ArrayList<Node> getPathList() {
@@ -22,8 +37,36 @@ public class Path {
         return destinations;
     }
 
+    public Node peekStops(){
+        return this.stops.get(0);
+    }
+
+    public Node popStops(){
+        Node node = this.stops.get(0);
+        this.stops.remove(0);
+        return node;
+    }
+
+    public Node peekPathList(){
+        return this.pathList.get(0);
+    }
+
+    public Node popPathList(){
+        Node node = this.pathList.get(0);
+        this.pathList.remove(0);
+        return node;
+    }
+
+    public void pushPathList(Node node){
+        this.pathList.add(0, node);
+    }
+
     public void setStops(ArrayList<Node> stops) {
         this.stops = stops;
+    }
+
+    public ArrayList<Node> getStops() {
+        return stops;
     }
 
     public void setDestinations(LinkedList<Node> destinations) {
@@ -51,8 +94,9 @@ public class Path {
         ArrayList<Node> newPathList = new ArrayList<>();
         ArrayList<Node> newStops = new ArrayList<>();
         LinkedList<Node> newDestinations = new LinkedList<>();
+        LinkedList<String> newOrderNos = new LinkedList<>();
 
-        Path bridgePath = PathFind.findPath(graph, this.pathList.get(this.pathList.size() - 1), path.pathList.get(0), null, null);
+        Path bridgePath = PathFind.findPath(graph, this.pathList.get(this.pathList.size() - 1), path.pathList.get(0), null, null, null);
         double newTotalDistance = this.totalDistance + bridgePath.totalDistance + path.totalDistance;
         newPathList.addAll(this.pathList);
 
@@ -79,6 +123,15 @@ public class Path {
             newDestinations.addAll(path.destinations);
         }
 
+        if(this.orderNos != null){
+            newOrderNos.addAll(this.orderNos);
+        }
+
+        if(path.orderNos != null){
+            newOrderNos.addAll(path.orderNos);
+        }
+
+        newPath.setOrderNos(newOrderNos);
         newPath.setDestinations(newDestinations);
 
         return newPath;
@@ -104,21 +157,29 @@ public class Path {
         if(this.pathList.size() < 2){
             throw new IllegalStateException("popSubPath can only be called on a Path with a pathList >= 2");
         }
+        if(this.destinations.size() < 1){
+            throw new IllegalStateException("popSubPath can only be called on a path with a destination");
+        }
+        if(this.orderNos.size() < 1){
+            throw new IllegalStateException("popSubPath can only be called on a path with at least one order number");
+        }
         ArrayList<Node> newPathList = new ArrayList<>();
         ArrayList<Node> newStops = new ArrayList<>();
         LinkedList<Node> newDestinations = new LinkedList<>();
+        LinkedList<String> newOrderNos = new LinkedList<>();
         boolean endOfPath = false;
         while(!endOfPath){
             Node nextNode = this.pathList.get(0);
             this.pathList.remove(0);//pops pathList node
             newPathList.add(nextNode);
-            if(this.stops.get(0) == nextNode) {
+            if(this.stops.get(0).equals(nextNode)) {
                 Node nextStop = this.stops.get(0);//pops stop node
                 this.stops.remove(0);
                 newStops.add(nextStop);
-                if(nextStop == this.destinations.getFirst()){
+                if(nextStop.equals(this.destinations.getFirst())){
                     this.pathList.add(0, nextNode);
                     newDestinations.add(this.destinations.pop());
+                    newOrderNos.add(this.popOrderNos());
                     endOfPath = true;
                 }
             }
@@ -127,6 +188,7 @@ public class Path {
         Path subPath = new Path(newPathList, approxTotalDistance);
         subPath.setStops(newStops);
         subPath.setDestinations(newDestinations);
+        subPath.setOrderNos(newOrderNos);
         return subPath;
     }
 }

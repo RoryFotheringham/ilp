@@ -10,7 +10,7 @@ public class App
     String portDB = "1527";
     String portWeb = "9898";
     String machineName = "localhost";
-    Date date = Date.valueOf("2023-01-31"); //placeholder params
+    Date date = Date.valueOf("2023-01-01"); //placeholder params
 //todo handle the args to construct Menus and Orders Classes
 
 
@@ -20,6 +20,6 @@ public class App
         Area area = new Area(machineName, portWeb);
         Graph graph = new Graph(area, orders);
         PathManagement pathManagement = new PathManagement(graph, orders);
-
+        FlightPath flightPath = new FlightPath(graph, pathManagement.getAbsolutePath());
     }
 }

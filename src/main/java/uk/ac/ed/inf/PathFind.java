@@ -6,18 +6,18 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class PathFind {
-    public static Path findPath(Graph graph, Node start, Node target, ArrayList<Node> stops, LinkedList<Node> deliverTo){
+    public static Path findPath(Graph graph, Node start, Node target, ArrayList<Node> stops, LinkedList<Node> deliverTo, LinkedList<String> orderNos){
         graph.cleanNodes();
         Node node = aStar(start, target);
-        return pathFromAStar(node, stops, deliverTo);
+        return pathFromAStar(node, stops, deliverTo, orderNos);
     }
 
     private static Node aStar(Node start, Node target) {
         PriorityQueue<Node> closedList = new PriorityQueue<>();
         PriorityQueue<Node> openList = new PriorityQueue<>();
 
-        start.g = 0;
-        start.f = start.distanceTo(target);
+        start.setG(0);
+        start.setF(start.distanceTo(target));
         openList.add(start);
 
         while (!openList.isEmpty()) {
@@ -27,18 +27,18 @@ public class PathFind {
             }
             for (Edge edge : n.getEdges()) {
                 Node m = edge.node;
-                double totalWeight = n.g + edge.weight;
+                double totalWeight = n.getG() + edge.weight;
 
                 if (!openList.contains(m) && !closedList.contains(m)) {
-                    m.parent = n;
-                    m.g = totalWeight;
-                    m.f = m.g + m.distanceTo(target);
+                    m.setParent(n);
+                    m.setG(totalWeight);
+                    m.setF(m.getG() + m.distanceTo(target));
                     openList.add(m);
                 } else {
-                    if (totalWeight < m.g) {
-                        m.parent = n;
-                        m.g = totalWeight;
-                        m.f = m.g + m.distanceTo(target);
+                    if (totalWeight < m.getG()) {
+                        m.setParent(n);
+                        m.setG(totalWeight);
+                        m.setF(m.getG() + m.distanceTo(target));
                         if (closedList.contains(m)) {
                             closedList.remove(m);
                             openList.add(m);
@@ -52,27 +52,29 @@ public class PathFind {
         return null;
     }
 
-    private static Path pathFromAStar(Node node, ArrayList<Node> stops, LinkedList<Node> deliverTo){
+    private static Path pathFromAStar(Node node, ArrayList<Node> stops, LinkedList<Node> deliverTo, LinkedList<String> orderNos){
         ArrayList<Node> pathList = new ArrayList<>();
         pathList.add(node);
 
-        double totalWeight = node.g;
+        double totalWeight = node.getG();
 
-        if(node.parent == null){
-            Path path = new Path(pathList, node.g);
+        if(node.getParent() == null){
+            Path path = new Path(pathList, node.getG());
             path.setStops(stops);
             path.setDestinations(deliverTo);
+            path.setOrderNos(orderNos);
             return path;
         }
 
-        while(!(node.parent == null)){
-            pathList.add(node.parent);
-            node = node.parent;
+        while(!(node.getParent() == null)){
+            pathList.add(node.getParent());
+            node = node.getParent();
         }
         Collections.reverse(pathList);
         Path path = new Path(pathList, totalWeight);
         path.setStops(stops);
         path.setDestinations(deliverTo);
+        path.setOrderNos(orderNos);
         return path;
     }
 }
