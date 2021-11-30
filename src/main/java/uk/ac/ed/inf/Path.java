@@ -142,6 +142,10 @@ public class Path {
         newPath.setOrderNos(newOrderNos);
         newPath.setDestinations(newDestinations);
 
+        if(!NoFlyPolice.validPathList(newPath.getPathList())){
+            System.out.println("BADDD");
+        }
+
         return newPath;
     }
     private static double approxTotalDistanceFromPathList(ArrayList<Node> pathList){

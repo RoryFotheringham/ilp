@@ -27,10 +27,21 @@ public class Area {
         createNoFlyList();
         createLandmarks();
     }
+    public boolean intersectsNoFly(LongLat ll_1, LongLat ll_2){
+        Point2D p = new Point2D.Double(ll_1.getLongitude(), ll_1.getLatitude());
+        Point2D q = new Point2D.Double(ll_2.getLongitude(), ll_2.getLatitude());
+        Line2D line = new Line2D.Double(p, q);
+        for (NoFly noFly: noFlyList){
+            if (noFly.isIntersecting(line)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean intersectsNoFly(Node node1, Node node2){
         Point2D p = new Point2D.Double(node1.getLongLat().getLongitude(), node1.getLongLat().getLatitude());
-        Point2D q = new Point2D.Double(node2.getLongLat().getLongitude(), node1.getLongLat().getLatitude());
+        Point2D q = new Point2D.Double(node2.getLongLat().getLongitude(), node2.getLongLat().getLatitude());
         Line2D line = new Line2D.Double(p, q);
         for (NoFly noFly: noFlyList){
             if (noFly.isIntersecting(line)){

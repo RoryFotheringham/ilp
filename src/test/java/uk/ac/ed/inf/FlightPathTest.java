@@ -8,10 +8,10 @@ import static org.junit.Assert.assertTrue;
 
 public class FlightPathTest {
     TestObjects to = new TestObjects();
-    /*
+/*
     @Test
     public void findBestAngleTest(){
-        FlightPath fp = new FlightPath(to.testGraph, to.path_1);
+        FlightPath fp = new FlightPath(to.testGraph, to.path_1, null, null);
         LongLat currentPos = new LongLat(2, 0);
         LongLat destinationPos = new LongLat(6, 0);
         ArrayList<Integer> subFlightPath = new ArrayList<>();
@@ -41,12 +41,16 @@ public class FlightPathTest {
         expected.add(-999);
         assertEquals(expected, subFlightPath);
     }
-
+*/
     @Test
     public void generateSubFlightPathTest(){
         Path path = to.path_small;
-        FlightPath fp = new FlightPath(to.testGraph, path);
-        ArrayList<Integer> actual = fp.generateSubFlightPath(path);
+        FlightPath fp = new FlightPath(to.testGraph, path, null, null);
+        ArrayList<Move> moves = fp.generateSubFlightPath(path);
+        ArrayList<Integer> actual = new ArrayList<>();
+        for(Move move: moves){
+            actual.add(move.getAngle());
+        }
         ArrayList<Integer> expected = new ArrayList<>();
         expected.add(180);
         expected.add(180);
@@ -57,5 +61,5 @@ public class FlightPathTest {
         expected.add(-999);
         assertEquals(expected, actual);
     }
-*/
+
 }

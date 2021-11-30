@@ -15,6 +15,10 @@ public class PathManagement {
         generateStopSegments(graph, orders);
         makePaths(graph);
         findAbsolutePath(graph);
+
+        if(!NoFlyPolice.validPathList(this.absolutePath.getPathList())){
+            System.out.println("BAD PATH!!!");
+        }
     }
 
     public Path getAbsolutePath() {
@@ -30,12 +34,10 @@ public class PathManagement {
     public void generateStopSegments(Graph graph, Orders orders){
         for(OrderDetails orderDetails: orders.getOrdersList()){
             StopSegment stopSegment = new StopSegment();
-            //Node destinationNode = graph.graphMap.get(orderDetails.getDeliverTo());
             Node destinationNode = graph.graphMapQuery(orderDetails.getDeliverTo());
             stopSegment.setDestination(destinationNode);
             stopSegment.setOrderNo(orderDetails.getOrderNo());
             for(Item item: orderDetails.getItems()){
-                //Node itemNode = graph.graphMap.get(item.longLat);
                 Node itemNode = graph.graphMapQuery(item.getLongLat());
 
                 if(!stopSegment.stores.contains(itemNode)) {
@@ -48,8 +50,7 @@ public class PathManagement {
 
     public Path popClosestPathStart(LinkedList<Path> unsortedPaths, Node node){
         //makes the assumption that paths.pathLis.get(0) is always equal to paths.get(0).stops.get(0)
-        //as the first stop in a path will always be equal to the first node - this is verified in pathManagementTest
-        //todo actually verify the above lmao
+        //as the first stop in a path will always be equal to the first node
         double minDistance = node.distanceTo(unsortedPaths.get(0).getStops().get(0));
         Path minDistancePath = unsortedPaths.get(0);
         int minDistanceIndex = 0;
@@ -65,6 +66,10 @@ public class PathManagement {
             i++;
         }
         unsortedPaths.remove(minDistanceIndex);
+        if(!NoFlyPolice.validPathList(minDistancePath.getPathList())){
+            System.out.println("BAD PATH!!!");
+        }
+
         return minDistancePath;
     }
 
@@ -103,6 +108,7 @@ public class PathManagement {
             sortedPaths.push(joinedPath);
         }
         this.absolutePath = sortedPaths.peek();
+        this.absolutePath.getStops().remove(0);
     }
 
 }

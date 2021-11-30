@@ -13,6 +13,8 @@ public class Graph{
     private ArrayList<Node> nodeList;
     private ArrayList<Node> stores = new ArrayList<>();
     private ArrayList<Node> customers = new ArrayList<>();
+    public int testi = 0;
+    public int testi_2 = 0;
 
     public Graph(ArrayList<Node> nodes){//constructor only to be used for generating test graphs.
         this.nodeList = nodes;
@@ -21,6 +23,11 @@ public class Graph{
     public Graph(Area area, Orders orders) {
         ArrayList<NoFly> noFlyList = area.noFlyList;
         generateGraph(area, orders);
+        NoFlyPolice nfp = new NoFlyPolice(area);
+
+        if(nfp.edgesIntersect(nodeList)){
+            System.out.println("edges intersect");
+        }
     }
 
     public Node graphMapQuery(LongLat longLat){
@@ -32,6 +39,8 @@ public class Graph{
             node.cleanNode();
         }
     }
+
+
 
     public void generateGraph(Area area, Orders orders){
         this.nodeList = new ArrayList<>();
@@ -45,10 +54,15 @@ public class Graph{
         generateEdges(area);
     }
 
+
     public void generateEdges(Area area){
         for (Node currentNode: this.nodeList){//add the nodes that can reach each other in a straight line as edges
             for(Node otherNode: this.nodeList){
-                if(currentNode != otherNode && !area.intersectsNoFly(currentNode, otherNode)){
+                if (area.intersectsNoFly(currentNode, otherNode)){
+                    testi++;
+                }
+                if(!currentNode.equals(otherNode) && !area.intersectsNoFly(currentNode, otherNode)){
+                    testi_2++;
                     double weight = currentNode.distanceTo(otherNode);
                     Edge edge = new Edge(weight, otherNode);
                     currentNode.addEdge(edge);

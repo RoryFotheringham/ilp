@@ -94,7 +94,7 @@ public class PathTest {
         Path actualPath = path_3.concatPaths(testGraph, path_2);
 
         LinkedList<Node> expected = destination;
-        assertEquals(expected, actualPath.destinations);
+        assertEquals(expected, actualPath.getDestinations());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class PathTest {
         path_1.setDestinations(destination1);
         path_2.setDestinations(destination2);
         Path actualPath = path_1.concatPaths(testGraph, path_2);
-        assertEquals(expected, actualPath.destinations);
+        assertEquals(expected, actualPath.getDestinations());
     }
 
     @Test

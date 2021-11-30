@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class FlightPath {
     private static final int ANGLE_LIMIT = 10;
     private static final int DEGREES = 360;
-    private static final int BATTERY_INITIAL = 100;
+    private static final int BATTERY_INITIAL = 1500;
     private static final double FEASIBLE_BUFFER = 1.2;
     private static final LongLat APPLETON_TOWER_LONGLAT = new LongLat(-3.186874, 55.944494);
     private static final String RETURN_ORDER_NO = "hometime";
@@ -16,10 +16,12 @@ public class FlightPath {
     private Path absolutePath;
     private int battery = BATTERY_INITIAL;
     private ArrayList<Move> flightPath = new ArrayList<>();
+    Area area;
     
 
 
-    public FlightPath(Graph graph, Path absolutePath, Deliveries deliveries){
+    public FlightPath(Graph graph, Path absolutePath, Deliveries deliveries, Area area){
+        this.area = area;
         this.absolutePath = absolutePath;
         generateFlightPath(graph, deliveries);
     }
@@ -41,7 +43,6 @@ public class FlightPath {
     public Path generateHomePath(Graph graph, Node currentNode){
         Node appletonNode = graph.graphMapQuery(APPLETON_TOWER_LONGLAT);
         ArrayList<Node> stops = new ArrayList<>();
-        stops.add(currentNode);
         stops.add(appletonNode);
         LinkedList<Node> destinations = new LinkedList<>();
         destinations.add(appletonNode);
@@ -61,7 +62,7 @@ public class FlightPath {
             Path homePath = generateHomePath(graph, absolutePath.peekPathList());
             if(isFeasiblePath(subPath, homePath)){
                 this.flightPath.addAll(generateSubFlightPath(subPath));
-                if(absolutePath.getPathList().size() > 1) {
+                if(absolutePath.getPathList().size() > 1 && deliveries != null) {
                     deliveries.makeDelivery(subPath.peekOrderNos());
                     currentNode = subPath.getDestinations().getFirst();
                 }
@@ -80,20 +81,26 @@ public class FlightPath {
         if (subPath.getPathList().size() < 2) {
             throw new IllegalArgumentException("Cannot generate subFlightPath from a pathList with a size < 2");
         }
+
         ArrayList<Move> subFlightPath = new ArrayList<>();
         LinkedList<Node> pathList = new LinkedList<>(subPath.getPathList());
         LinkedList<Node> stops = new LinkedList<>(subPath.getStops());
         String orderNo = subPath.orderNos.getFirst();
-        LongLat currentPos = pathList.pop().getLongLat();
-        LongLat destinationPos = pathList.pop().getLongLat();
-        stops.removeFirst();
+        Node currentPosNode = pathList.pop();
+        LongLat currentPos = currentPosNode.getLongLat();
+        Node destinationNode = pathList.pop();
+        LongLat destinationPos = destinationNode.getLongLat();
+
         while(!stops.isEmpty()){
             LongLat nextPos = findBestAngle(currentPos, destinationPos, subFlightPath, orderNo);
             if (isHovering(subFlightPath)){
-                if(!pathList.isEmpty()) {
-                    destinationPos = pathList.pop().getLongLat();
+                if(destinationNode.equals(stops.getFirst())){
+                    stops.removeFirst();
                 }
-                stops.removeFirst();
+                if(!pathList.isEmpty()) {
+                    destinationNode = pathList.pop();
+                    destinationPos = destinationNode.getLongLat();
+                }
             }
             currentPos = nextPos;
         }
@@ -121,6 +128,7 @@ public class FlightPath {
             }
         }
         Move newMove = new Move(orderNo, currentPos.getLongitude(), currentPos.getLatitude(), minDistanceAngle, minDistancePos.getLongitude(), minDistancePos.getLatitude());
+
         subFlightPath.add(newMove);
         this.battery -= 1;
         return minDistancePos;
