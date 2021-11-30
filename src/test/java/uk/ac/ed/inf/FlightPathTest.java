@@ -41,7 +41,7 @@ public class FlightPathTest {
         expected.add(-999);
         assertEquals(expected, subFlightPath);
     }
-*/
+
     @Test
     public void generateSubFlightPathTest(){
         Path path = to.path_small;
@@ -61,5 +61,5 @@ public class FlightPathTest {
         expected.add(-999);
         assertEquals(expected, actual);
     }
-
+*/
 }

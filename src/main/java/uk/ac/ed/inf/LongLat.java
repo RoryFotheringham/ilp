@@ -7,15 +7,21 @@ import java.util.Objects;
  * stores values and performs basic calculations.
  */
 public class LongLat {
-    public static final double CONFINEMENT_AREA_X1 = -3.192473; //constants outlining the confinement area in long-lat degrees
-    public static final double CONFINEMENT_AREA_X2 = -3.184319;
-    public static final double CONFINEMENT_AREA_Y1 = 55.942617;
-    public static final double CONFINEMENT_AREA_Y2 = 55.946333;
-    public static final double MOVEMENT_DISTANCE =  0.00015;
-    public static final int HOVER_VALUE = -999;
+    private static final double CONFINEMENT_AREA_X1 = -3.192473; //constants outlining the confinement area in long-lat degrees
+    private static final double CONFINEMENT_AREA_X2 = -3.184319;
+    private static final double CONFINEMENT_AREA_Y1 = 55.942617;
+    private static final double CONFINEMENT_AREA_Y2 = 55.946333;
+    private static final double MOVEMENT_DISTANCE =  0.00015;
+    private static final int HOVER_VALUE = -999;
     private double longitude;
     private double latitude;
 
+    /**
+     * overriding equals as LongLats objects will be compared in the context of
+     * querying Graph.graphMap which is a HashMap<LongLat, Node>
+     * @param o object
+     * @return true if objects have the same longitude and latitude coords
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -25,16 +31,35 @@ public class LongLat {
                 Double.compare(longLat.getLatitude(), getLatitude()) == 0;
     }
 
+    /**
+     * HashCode override to maintain the hashcode contract given the override of equals
+     * - that two equal objects must give the same hashCode
+     * - This is particularly relevant as LongLat is used in a HashMap in the Graph class
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getLongitude(), getLatitude());
     }
 
+    /**
+     * basic constructor
+     * @param longitude longitude value
+     * @param latitude latitude value
+     */
     public LongLat(double longitude, double latitude){
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
+    /**
+     * What3Words constructor - creates a LongLat object from the coordinates that the what3words string describes
+     * - assumes that the what3words string can be found on the webserver,
+     *otherwise the system throws relevant exeption and exits
+     * @param what3words what3words string
+     * @param machineName machine name
+     * @param port port of the web server
+     */
     public LongLat(String what3words, String machineName, String port){
         double[] coords = WhatThreeWords.convertToCoordinates(what3words, machineName, port);
         this.longitude = coords[0];

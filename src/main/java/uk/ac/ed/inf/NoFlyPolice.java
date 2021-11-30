@@ -34,7 +34,7 @@ public class NoFlyPolice {
 
     public static boolean nodesShareEdge(Node node, Node otherNode){
         for(Edge edge : node.getEdges()){
-            if (edge.node.equals(otherNode)){
+            if (edge.getNode().equals(otherNode)){
                 return true;
             }
         }
@@ -44,7 +44,7 @@ public class NoFlyPolice {
     public boolean edgesIntersect(ArrayList<Node> nodeList){
         for(Node node : nodeList){
             for(Edge edge : node.getEdges()){
-                if(this.area.intersectsNoFly(node, edge.node)){
+                if(this.area.intersectsNoFly(node, edge.getNode())){
                     return true;
                 }
             }

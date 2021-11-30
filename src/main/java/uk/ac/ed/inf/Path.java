@@ -14,11 +14,13 @@ public class Path {
         this.pathList = pathList;
         this.totalDistance = totalDistance;
     }
+
+    public LinkedList<String> getOrderNos() {
+        return orderNos;
+    }
+
     public String popOrderNos(){
         return this.orderNos.pop();
-    }
-    public LinkedList<String> getOrderNos(){
-        return this.orderNos;
     }
 
     public String peekOrderNos(){
@@ -27,10 +29,6 @@ public class Path {
 
     public void setOrderNos(LinkedList<String> orderNos){
         this.orderNos = orderNos;
-    }
-
-    public void addOrderNos(String orderNo){
-        this.orderNos.add(orderNo);
     }
 
     public double getTotalDistance() {
@@ -45,16 +43,6 @@ public class Path {
         return destinations;
     }
 
-    public Node peekStops(){
-        return this.stops.get(0);
-    }
-
-    public Node popStops(){
-        Node node = this.stops.get(0);
-        this.stops.remove(0);
-        return node;
-    }
-
     public Node peekPathList(){
         return this.pathList.get(0);
     }
@@ -63,10 +51,6 @@ public class Path {
         Node node = this.pathList.get(0);
         this.pathList.remove(0);
         return node;
-    }
-
-    public void pushPathList(Node node){
-        this.pathList.add(0, node);
     }
 
     public void setStops(ArrayList<Node> stops) {
@@ -81,10 +65,6 @@ public class Path {
         this.destinations = destinations;
     }
 
-    public void addDestination(Node destination){
-        this.destinations.add(destination);
-    }
-
     private void dropHeadTail(){
         //WARNING this will not change the totalDistance accordingly
         //only use for concatenation
@@ -95,6 +75,16 @@ public class Path {
         }
     }
 
+    /**
+     * method concatenates this path with another given path.
+     * the 'bridge' between the two paths is found with PathFind.findPath which finds the shortest path from the first to the second path,
+     * ensuring that there is an edge between every node in the final pathList.
+     *
+     * The method also concatenates all other properties in a Path object - destination, orderNo, stops.
+     * @param graph a Graph
+     * @param path the path which will be appended to this path
+     * @return a new Path object which goes from the first node of this path to the last node of the given path
+     */
     public Path concatPaths(Graph graph, Path path){
         if(this.stops == null || path.stops == null){
             throw new IllegalArgumentException("Path has null stops");
@@ -103,22 +93,22 @@ public class Path {
         ArrayList<Node> newStops = new ArrayList<>();
         LinkedList<Node> newDestinations = new LinkedList<>();
         LinkedList<String> newOrderNos = new LinkedList<>();
-
+        //find a bridge between the two paths
         Path bridgePath = PathFind.findPath(graph, this.pathList.get(this.pathList.size() - 1), path.pathList.get(0), null, null, null);
         double newTotalDistance = this.totalDistance + bridgePath.totalDistance + path.totalDistance;
         newPathList.addAll(this.pathList);
 
         if(bridgePath.pathList.size() > 1){
-            bridgePath.dropHeadTail();
+            bridgePath.dropHeadTail(); //drop the head and tail to avoid the start and end of paths being duplicated
             newPathList.addAll(bridgePath.pathList);
         }else{
-            path.pathList.remove(0);
+            path.pathList.remove(0); //remove the first node in the given path's pathList if the bridge path consists of a single node
         }
         newPathList.addAll(path.pathList);
         Path newPath = new Path(newPathList, newTotalDistance);
 
         if(this.stops.get(this.stops.size() - 1).equals(path.stops.get(0))) {
-            path.stops.remove(0);
+            path.stops.remove(0); //handles the case where the second path starts where the second path finishes
         }
         newStops.addAll(this.stops);
         newStops.addAll(path.stops);
@@ -136,29 +126,32 @@ public class Path {
         }
 
         if(path.orderNos != null){
-            newOrderNos.addAll(path.orderNos);
+            newOrderNos.addAll(path.orderNos); //add destinations and stops of the two paths
         }
 
         newPath.setOrderNos(newOrderNos);
         newPath.setDestinations(newDestinations);
 
-        if(!NoFlyPolice.validPathList(newPath.getPathList())){
-            System.out.println("BADDD");
-        }
-
         return newPath;
     }
+
+    /**
+     * method finds the euclidean distance between each node in a sequence.
+     * distance is only approximate because the number of moves that the drone will make will be slightly larger than the euclidean distance
+     * @param pathList a list of nodes in a path
+     * @return a double representing the approximate distance
+     */
     private static double approxTotalDistanceFromPathList(ArrayList<Node> pathList){
         double approxTotalDistance = 0;
-        for(int i = 0; i < pathList.size() - 1; i++){
+        for(int i = 0; i < pathList.size() - 1; i++){ //finds the total distance between each node in the sequence
             approxTotalDistance += pathList.get(i).distanceTo(pathList.get(i + 1));
         }
         return approxTotalDistance;
     }
 
     /**
-     * Method pops the nodes in pathList up to the next destination node and returns in a path
-     * upon reaching the destination node, removes it from the destinations but keeps it in the pathList.
+     * Method pops the nodes in pathList up to the next destination node and returns in a path.
+     * Upon reaching the destination node it removes it from the destinations but keeps it in the pathList.
      * the final node is not removed from the pathList so that the next node will 'start where it finished'
      * @return Path with consecutive nodes up to the next destination node from the path it was called on
      */
@@ -188,7 +181,7 @@ public class Path {
                 Node nextStop = this.stops.get(0);//pops stop node
                 this.stops.remove(0);
                 newStops.add(nextStop);
-                if(nextStop.equals(this.destinations.getFirst())){
+                if(nextStop.equals(this.destinations.getFirst())){ //if the next node is a destination then add it to the pathList again
                     this.pathList.add(0, nextNode);
                     newDestinations.add(this.destinations.pop());
                     newOrderNos.add(this.popOrderNos());

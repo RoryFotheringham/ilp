@@ -15,23 +15,19 @@ public class PathManagement {
         generateStopSegments(graph, orders);
         makePaths(graph);
         findAbsolutePath(graph);
-
-        if(!NoFlyPolice.validPathList(this.absolutePath.getPathList())){
-            System.out.println("BAD PATH!!!");
-        }
     }
 
     public Path getAbsolutePath() {
         return absolutePath;
     }
 
-    public void makePaths(Graph graph){
+    private void makePaths(Graph graph){
         for(StopSegment stopSegment: this.stopSegments){
             this.paths.add(stopSegment.bestPath(graph));
         }
     }
 
-    public void generateStopSegments(Graph graph, Orders orders){
+    private void generateStopSegments(Graph graph, Orders orders){
         for(OrderDetails orderDetails: orders.getOrdersList()){
             StopSegment stopSegment = new StopSegment();
             Node destinationNode = graph.graphMapQuery(orderDetails.getDeliverTo());
@@ -48,7 +44,7 @@ public class PathManagement {
         }
     }
 
-    public Path popClosestPathStart(LinkedList<Path> unsortedPaths, Node node){
+    private Path popClosestPathStart(LinkedList<Path> unsortedPaths, Node node){
         //makes the assumption that paths.pathLis.get(0) is always equal to paths.get(0).stops.get(0)
         //as the first stop in a path will always be equal to the first node
         double minDistance = node.distanceTo(unsortedPaths.get(0).getStops().get(0));
@@ -73,7 +69,7 @@ public class PathManagement {
         return minDistancePath;
     }
 
-    public LinkedList<Path> sortPathsGreedy(Graph graph){
+    private LinkedList<Path> sortPathsGreedy(Graph graph){
         LinkedList<Path> unsortedPaths = new LinkedList<>(this.paths);
         LinkedList<Path> sortedPaths = new LinkedList<>();
         ArrayList<Node> appletonPathList = new ArrayList<>();

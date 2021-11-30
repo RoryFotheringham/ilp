@@ -7,8 +7,10 @@ public class Node implements Comparable<Node>{
     private Node parent;
     private ArrayList<Edge> edges = new ArrayList<>();
     private LongLat longLat;
-    private double f = Double.MAX_VALUE;
-    private double g = Double.MAX_VALUE;
+    private double f = Double.MAX_VALUE; /*total cost of a node (heuristic distance to target + actual distance from start)
+                                          *this is in accordance with the A* path finding algorithm
+                                          */
+    private double g = Double.MAX_VALUE; // total distance to this node from start node using current shortest path
     private String name;
 
     public Node(ArrayList<Edge> edges, LongLat longLat) {
@@ -44,12 +46,22 @@ public class Node implements Comparable<Node>{
         return longLat;
     }
 
+    /**
+     * refreshes a node's f and g value which are used in the FindPath.pathfind method
+     * and must be set to infinity for the algorithm to work
+     */
     public void cleanNode(){
         this.setF(Double.POSITIVE_INFINITY);
         this.setG(Double.POSITIVE_INFINITY);
         this.setParent(null);
     }
 
+    /**
+     * overriding equals as Node objects will be compared in the context of
+     * querying Graph.graphMap which is a HashMap<LongLat, Node>
+     * @param o object
+     * @return true if objects have the same longitude and latitude coords
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,16 +70,32 @@ public class Node implements Comparable<Node>{
         return Objects.equals(longLat, node.longLat);
     }
 
+    /**
+     * HashCode override to maintain the hashcode contract given the override of equals
+     * - that two equal objects must give the same hashCode
+     * - This is particularly relevant as LongLat is used in a HashMap in the Graph class
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return Objects.hash(longLat);
     }
 
+    /**
+     * override compareTo for use in the PathFind.findpath algorithm which compares the f values of the node
+     * @param node
+     * @return
+     */
     @Override
     public int compareTo(Node node) {
         return Double.compare(this.getF(), node.getF());
     }
 
+    /**
+     * distance between two nodes is the distance between their LongLat points
+     * @param node node to which this node is being compared
+     * @return returns the euclidean distance between the two nodes
+     */
     public double distanceTo(Node node){
     double distance;
     LongLat p1 = this.longLat;

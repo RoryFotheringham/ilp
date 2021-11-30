@@ -19,21 +19,13 @@ public class App
         Orders orders = new Orders(machineName, portWeb, portDB, date, itemMap);
         Deliveries deliveries = new Deliveries(orders.getOrdersList());
         Area area = new Area(machineName, portWeb);
-        NoFlyPolice nfp = new NoFlyPolice(area);
         Graph graph = new Graph(area, orders);
         PathManagement pathManagement = new PathManagement(graph, orders);
 
         ArrayList<Node> absPathList = new ArrayList<>();
         absPathList.addAll(pathManagement.getAbsolutePath().getPathList());
         Path absPath = new Path(absPathList, 0);
-        FlightPath flightPath = new FlightPath(graph, pathManagement.getAbsolutePath(), deliveries, area);
-        if(nfp.intersectsNoFly(absPath.getPathList())){
-            System.out.println("br");
-        }
-
-        if(area.intersectsNoFly(new LongLat(-3.1860995292663574, 55.94466399121498), new LongLat(-3.190991878509521, 55.94558922395267))){
-            System.out.println("br");
-        }
+        FlightPath flightPath = new FlightPath(graph, pathManagement.getAbsolutePath(), deliveries);
         Visualise vis = new Visualise(flightPath.getFlightPath(), "01-01-2023", absPath.getPathList());
     }
 }

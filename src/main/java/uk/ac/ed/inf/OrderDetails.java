@@ -1,8 +1,9 @@
 package uk.ac.ed.inf;
-
-import java.sql.Date;
 import java.util.ArrayList;
 
+/**
+ * OrderDetails class stores information about an order
+ */
 public class OrderDetails {//todo investigate Date type and LongLat type for these vals
     private String orderNo;
     private String deliveryDate;
@@ -20,7 +21,6 @@ public OrderDetails(String orderNo, String deliveryDate, String customer, LongLa
     this.what3Words = what3Words;
 
     }
-
 
     public String getOrderNo() {
         return orderNo;

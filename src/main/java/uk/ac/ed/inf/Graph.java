@@ -13,8 +13,6 @@ public class Graph{
     private ArrayList<Node> nodeList;
     private ArrayList<Node> stores = new ArrayList<>();
     private ArrayList<Node> customers = new ArrayList<>();
-    public int testi = 0;
-    public int testi_2 = 0;
 
     public Graph(ArrayList<Node> nodes){//constructor only to be used for generating test graphs.
         this.nodeList = nodes;
@@ -24,10 +22,6 @@ public class Graph{
         ArrayList<NoFly> noFlyList = area.noFlyList;
         generateGraph(area, orders);
         NoFlyPolice nfp = new NoFlyPolice(area);
-
-        if(nfp.edgesIntersect(nodeList)){
-            System.out.println("edges intersect");
-        }
     }
 
     public Node graphMapQuery(LongLat longLat){
@@ -42,7 +36,7 @@ public class Graph{
 
 
 
-    public void generateGraph(Area area, Orders orders){
+    private void generateGraph(Area area, Orders orders){
         this.nodeList = new ArrayList<>();
         this.graphMap = new HashMap<>();
         generateAppletonNode(area);
@@ -55,14 +49,10 @@ public class Graph{
     }
 
 
-    public void generateEdges(Area area){
+    private void generateEdges(Area area){
         for (Node currentNode: this.nodeList){//add the nodes that can reach each other in a straight line as edges
             for(Node otherNode: this.nodeList){
-                if (area.intersectsNoFly(currentNode, otherNode)){
-                    testi++;
-                }
                 if(!currentNode.equals(otherNode) && !area.intersectsNoFly(currentNode, otherNode)){
-                    testi_2++;
                     double weight = currentNode.distanceTo(otherNode);
                     Edge edge = new Edge(weight, otherNode);
                     currentNode.addEdge(edge);
@@ -71,12 +61,12 @@ public class Graph{
         }
     }
 
-    public void generateLandmarkNodes(Area area){
+    private void generateLandmarkNodes(Area area){
         ArrayList<Landmark> landmarks = area.landmarks;
         for(Landmark landmark: landmarks){
-            Node node = new Node(landmark.longLat);
+            Node node = new Node(landmark.getLongLat());
             nodeList.add(node);
-            graphMap.put(landmark.longLat, node);
+            graphMap.put(landmark.getLongLat(), node);
         }
     }
 
