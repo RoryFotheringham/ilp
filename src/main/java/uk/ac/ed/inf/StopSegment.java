@@ -3,6 +3,9 @@ package uk.ac.ed.inf;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * A StopSegment represents the stops that need to be reached in a given order
+ */
 public class StopSegment {
     ArrayList<Node> stores = new ArrayList<>();
     Node destination;
@@ -26,11 +29,16 @@ public class StopSegment {
         return stops;
     }
 
+    /**
+     * selects the path from possiblePaths that takes the shortest distance
+     * @param graph a Graph
+     * @return minimum distance path that traverses the required nodes
+     */
     public Path bestPath(Graph graph){
-        ArrayList<Path> paths = possiblePaths(graph);
+        ArrayList<Path> paths = possiblePaths(graph); // returns an array of length either 1 or 2 Paths that traverse the required nodes
         double minDistance = paths.get(0).totalDistance;
         Path minDistancePath = paths.get(0);
-        for(Path path: paths){
+        for(Path path: paths){ // find the path that takes the shortest distance
             if(path.totalDistance < minDistance){
                 minDistance = path.totalDistance;
                 minDistancePath = path;
@@ -39,18 +47,25 @@ public class StopSegment {
         return minDistancePath;
     }
 
+    /**
+     * Finds the possible paths that traverse every required node in a StopSegment.
+     * If a StopSegment contains only one store then there is only one possible path (store -> destination)
+     * If there are two stores then there are two ways (store_1 -> store_2 -> customer) or (store_2 -> store_1 -> customer)
+     * @param graph a Graph
+     * @return an ArrayList<Path> of size either 1 or 2
+     */
     private ArrayList<Path> possiblePaths(Graph graph){
         LinkedList<Node> deliverTo = new LinkedList<>();
         deliverTo.add(this.destination);
         LinkedList<String> orderNoList = new LinkedList<>();
         orderNoList.add(this.orderNo);
         ArrayList<Path> paths = new ArrayList<>();
-        if(stores.size() == 1){
-
+        if(stores.size() == 1){ // case where there is only one store
             Path path = PathFind.findPath(graph, this.stores.get(0), this.destination, this.getStops(), deliverTo, orderNoList);
             paths.add(path);
             return paths;
         }else{
+            //find a path that bridges the first two nodes according to the first combination
             ArrayList<Node> stops_00 = new ArrayList<>();
             stops_00.add(this.stores.get(0));
             stops_00.add(this.stores.get(1));
@@ -58,11 +73,11 @@ public class StopSegment {
             ArrayList<Node> stops_01 = new ArrayList<>();
             stops_01.add(this.stores.get(1));
             stops_01.add(this.destination);
-
+            //find a path that bridges the second and third nodes according to the first combination
             Path path_01 = PathFind.findPath(graph, this.stores.get(1), this.destination, stops_01, deliverTo, orderNoList);
-            Path possiblePath_0 = path_00.concatPaths(graph, path_01);
+            Path possiblePath_0 = path_00.concatPaths(graph, path_01); //concatenate these two paths
             paths.add(possiblePath_0);
-
+            //repeat the process but according to the second combination
             ArrayList<Node> stops_10 = new ArrayList<>();
             stops_10.add(this.stores.get(1));
             stops_10.add(this.stores.get(0));

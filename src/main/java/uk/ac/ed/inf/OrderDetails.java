@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * OrderDetails class stores information about an order
  */
-public class OrderDetails {//todo investigate Date type and LongLat type for these vals
+public class OrderDetails {
     private String orderNo;
     private String deliveryDate;
     private ArrayList<Item> items;

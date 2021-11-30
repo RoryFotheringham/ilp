@@ -3,6 +3,11 @@ package uk.ac.ed.inf;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * A path represents a a journey through a sequence of nodes, storing the nodes that must be stopped at and the orderNumbers.
+ * - unlike a StopSegment, there must be an edge between two consecutive nodes in a Path
+ * - A path is distinct from a FlightPath which stores a list of individual moves.
+ */
 public class Path {
     private ArrayList<Node> pathList;
     double totalDistance;
@@ -65,6 +70,9 @@ public class Path {
         this.destinations = destinations;
     }
 
+    /**
+     * drops the head and tail of a path's pathList
+     */
     private void dropHeadTail(){
         //WARNING this will not change the totalDistance accordingly
         //only use for concatenation

@@ -82,6 +82,9 @@ public class FlightPath {
     private void generateFlightPath(Graph graph, Deliveries deliveries){
         Node currentNode = absolutePath.peekPathList();
         while(absolutePath.getPathList().size() > 1){
+            if(this.battery < 0){
+                throw new IllegalStateException("battery cannot be below 0");
+            }
             Path subPath = absolutePath.popSubPath(); // gets a subPath containing information for the next order
             Path homePath = generateHomePath(graph, absolutePath.peekPathList());
             if(isFeasiblePath(subPath, homePath)){
@@ -90,9 +93,8 @@ public class FlightPath {
                     deliveries.makeDelivery(subPath.peekOrderNos()); // adds the delivery corresponding to the orderNo to madeDeliveries
                     currentNode = subPath.getDestinations().getFirst(); // since the order has been completed our current position is the destination of the previous subPath
                 }
-            }
-            if(this.battery < 0){
-                throw new IllegalStateException("battery cannot be below 0");
+            }else{
+                break;
             }
         }
         if(!(currentNode.getLongLat().closeTo(APPLETON_TOWER_LONGLAT))){ // if, after finishing all feasible orders, we are not yet at Appleton...
@@ -101,6 +103,13 @@ public class FlightPath {
         }
     }
 
+    /**
+     * private method processes a subPath into a list of Moves which would guide the drone through the nodes in the subPath.
+     * @param subPath a Path consisting of a list of Nodes which represents the nodes in a single order.
+     *                subPath.stops should represent the stores and customer nodes in the order.
+     *                There should only be one value in subPath.destinations
+     * @return An ArrayList<Move> which would guide the drone from subPath.pathList.getFirst().longLat to subPath.pathList.getLast().longLat
+     */
     private ArrayList<Move> generateSubFlightPath(Path subPath) {
         if (subPath.getDestinations().size() != 1) {
             throw new IllegalArgumentException("subPath must have only one destination");
@@ -119,10 +128,12 @@ public class FlightPath {
         LongLat destinationPos = destinationNode.getLongLat();
 
         while(!stops.isEmpty()){
+            //The ArrayList<Move> subFlightPath is updated in the method findBestAngle - adding the Move that would result in being the closest to destinationPos
+            //The result of making this move is returned and stored as nextPos
             LongLat nextPos = findBestAngle(currentPos, destinationPos, subFlightPath, orderNo);
-            if (isHovering(subFlightPath)){
-                if(destinationNode.equals(stops.getFirst())){
-                    stops.removeFirst();
+            if (isHovering(subFlightPath)){ //(isHovering() == true) indicates that the destinationPos has been reached
+                if(destinationNode.equals(stops.getFirst())){  // this indicates that the destination reached was a stop
+                    stops.removeFirst(); //each node is removed as it is reached
                 }
                 if(!pathList.isEmpty()) {
                     destinationNode = pathList.pop();
@@ -134,14 +145,24 @@ public class FlightPath {
         return subFlightPath;
     }
 
+    /**
+     * method creates a Move that would result in a drone minimising the distance between currentPos and destination.
+     * This Move is then added to subFlightPath.
+     * The new location as a result of moving the 'Move' is returned in a LongLat
+     * @param currentPos the LongLat of the drones current position in the flightPath
+     * @param destination the LongLat position of the next node in the drone's journey
+     * @param subFlightPath the list of Moves to be appended to
+     * @param orderNo the number of the order currently being completed by the drone
+     * @return the new location as a result of moving the 'Move' in LongLat form.
+     */
     private LongLat findBestAngle(LongLat currentPos, LongLat destination, ArrayList<Move> subFlightPath, String orderNo){
-
-        if(currentPos.closeTo(destination)){
+        if(currentPos.closeTo(destination)){ // the case where the drone has reached its destination
             Move newMove = new Move(orderNo, currentPos.getLongitude(), currentPos.getLatitude(), HOVER_VALUE, currentPos.getLongitude(), currentPos.getLatitude());
             subFlightPath.add(newMove);
-            this.battery -= 1;
+            this.battery -= 1; // battery is decreased for every move made
             return currentPos;
         }
+        // iterate through every angle and find the one that would minimise the distance between the result of travelling in that angle and the destinationPos
         int minDistanceAngle = 0;
         LongLat minDistancePos = currentPos.nextPosition(minDistanceAngle);
         double minDistance = minDistancePos.distanceTo(destination);
@@ -157,7 +178,7 @@ public class FlightPath {
         Move newMove = new Move(orderNo, currentPos.getLongitude(), currentPos.getLatitude(), minDistanceAngle, minDistancePos.getLongitude(), minDistancePos.getLatitude());
 
         subFlightPath.add(newMove);
-        this.battery -= 1;
+        this.battery -= 1; // battery is decreased for every move made
         return minDistancePos;
     }
 

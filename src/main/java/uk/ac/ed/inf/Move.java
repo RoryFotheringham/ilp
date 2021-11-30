@@ -1,5 +1,9 @@
 package uk.ac.ed.inf;
 
+/**
+ * class represents a single move in the flight path.
+ * information is stored in the format that will be written to the database
+ */
 public class Move {
     private String orderNo;
     private double fromLongitude;

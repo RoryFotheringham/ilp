@@ -1,5 +1,8 @@
 package uk.ac.ed.inf;
 
+/**
+ * class stores information about each delivery made - eventually this data is written to the database
+ */
 public class DeliveryDetails {
     private String orderNo;
     private String deliveredTo;

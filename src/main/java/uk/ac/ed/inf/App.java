@@ -10,22 +10,19 @@ public class App
     String portDB = "1527";
     String portWeb = "9898";
     String machineName = "localhost";
-    Date date = Date.valueOf("2023-11-11"); //placeholder params
+    Date date = Date.valueOf("2023-12-12"); //placeholder params
 //todo handle the args to construct Menus and Orders Classes
 
-
-        Menus menus = new Menus(machineName, portWeb);
-        HashMap<String, Item> itemMap = menus.getItemMap();
-        Orders orders = new Orders(machineName, portWeb, portDB, date, itemMap);
-        Deliveries deliveries = new Deliveries(orders.getOrdersList());
-        Area area = new Area(machineName, portWeb);
-        Graph graph = new Graph(area, orders);
-        PathManagement pathManagement = new PathManagement(graph, orders);
-
-        ArrayList<Node> absPathList = new ArrayList<>();
-        absPathList.addAll(pathManagement.getAbsolutePath().getPathList());
-        Path absPath = new Path(absPathList, 0);
-        FlightPath flightPath = new FlightPath(graph, pathManagement.getAbsolutePath(), deliveries);
-        Visualise vis = new Visualise(flightPath.getFlightPath(), "01-01-2023", absPath.getPathList());
+        //read information from the web server and database
+        Read read = new Read(machineName, portWeb, portDB, date);
+        Orders orders = read.getOrders();
+        Area area = read.getArea();
+        Deliveries deliveries = read.getDeliveries();
+        //process the information into a flightPath and absolutePath
+        Process process = new Process(orders, deliveries, area);
+        ArrayList<Node> absolutePathList = process.getAbsPathList();
+        ArrayList<Move> flightPathList = process.getFlightPathList();
+        //create geoJson file from flightPath and absolutePath
+        Visualise vis = new Visualise(flightPathList, "01-01-2023", absolutePathList);
     }
 }

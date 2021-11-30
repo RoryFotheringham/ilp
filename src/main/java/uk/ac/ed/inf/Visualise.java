@@ -10,8 +10,13 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+class handles the visualisation of flight path data
+ */
 public class Visualise {
+    /*
+    constructor calls functions that create the geoJson files
+     */
     public Visualise(ArrayList<Move> flightPath, String ddMMYYYY, ArrayList<Node> pathList){
         ArrayList<Point> pointList = makePointList(flightPath);
         ArrayList<Point> nodePointList = pointsFromAbsolutePath(pathList);
@@ -25,6 +30,11 @@ public class Visualise {
         return "drone-" + ddMMYYY + ".geojson";
     }
 
+    /**
+     * create a geoJson file in the top level of the project from a geoJsonString
+     * @param geoJsonPathString the geoJson string
+     * @param ddMMYYY the date
+     */
     private void makeFile(String geoJsonPathString, String ddMMYYY){
         String fileName = makeFileName(ddMMYYY);
         try{
@@ -37,6 +47,11 @@ public class Visualise {
         }
     }
 
+    /**
+     * Processes an ArrayList<Point> into a json string
+     * @param pointList
+     * @return
+     */
     private String jsonFromPoints(ArrayList pointList){
         LineString lineString = LineString.fromLngLats(pointList);
         Geometry geom = (Geometry)lineString;
@@ -44,6 +59,12 @@ public class Visualise {
         FeatureCollection featureCollection = FeatureCollection.fromFeature(feature);
         return featureCollection.toJson();
     }
+
+    /**
+     * converts an absolute path into a list of Points
+     * @param absolutePath path
+     * @return list of points corresponding to the nodes in absolute path
+     */
     private ArrayList<Point> pointsFromAbsolutePath(ArrayList<Node> absolutePath){
         ArrayList<Point> pointList = new ArrayList<>();
         for(Node node : absolutePath){
@@ -55,6 +76,11 @@ public class Visualise {
         return pointList;
     }
 
+    /**
+     * processes a list of moves into a list of Points
+     * @param flightPath list of moves
+     * @return list of Points
+     */
     private ArrayList<Point> makePointList(ArrayList<Move> flightPath){
         ArrayList<Point> pointList = new ArrayList<>();
         for(Move move: flightPath){

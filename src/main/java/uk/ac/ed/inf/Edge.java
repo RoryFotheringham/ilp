@@ -1,5 +1,8 @@
 package uk.ac.ed.inf;
 
+/**
+ * an edge object that is stored in a node
+ */
 public class Edge {
     private double weight = 0;
     private Node node;

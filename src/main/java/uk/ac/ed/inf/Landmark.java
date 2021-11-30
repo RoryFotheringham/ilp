@@ -2,6 +2,9 @@ package uk.ac.ed.inf;
 
 import org.geojson.Feature;
 
+/**
+ * class stores information about a Landmark
+ */
 public class Landmark {
     private LongLat longLat;
     private Feature feature;
