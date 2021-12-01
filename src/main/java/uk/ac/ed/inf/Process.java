@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Process {
     private ArrayList<Node> absPathList;
-    private ArrayList<Move> flightPathList;
+    private FlightPath flightPath;
 
     public Process(Orders orders, Deliveries deliveries, Area area){
         Graph graph = new Graph(area, orders);
@@ -14,14 +14,15 @@ public class Process {
         Path absPath = new Path(absPathList, 0);
         FlightPath flightPath = new FlightPath(graph, pathManagement.getAbsolutePath(), deliveries);
         this.absPathList = absPath.getPathList();
-        this.flightPathList = flightPath.getFlightPath();
+        this.flightPath = flightPath;
     }
 
     public ArrayList<Node> getAbsPathList() {
         return absPathList;
     }
 
-    public ArrayList<Move> getFlightPathList() {
-        return flightPathList;
+    public FlightPath getFlightPath() {
+        return flightPath;
     }
+
 }

@@ -11,6 +11,7 @@ public class App
     String portWeb = "9898";
     String machineName = "localhost";
     Date date = Date.valueOf("2023-12-12"); //placeholder params
+    String ddMMYYYY = ("12-12-2023");
 //todo handle the args to construct Menus and Orders Classes
 
         //read information from the web server and database
@@ -21,8 +22,9 @@ public class App
         //process the information into a flightPath and absolutePath
         Process process = new Process(orders, deliveries, area);
         ArrayList<Node> absolutePathList = process.getAbsPathList();
-        ArrayList<Move> flightPathList = process.getFlightPathList();
+        FlightPath flightPath = process.getFlightPath();
         //create geoJson file from flightPath and absolutePath
-        Visualise vis = new Visualise(flightPathList, "01-01-2023", absolutePathList);
+        Write write = new Write(flightPath, absolutePathList, deliveries, ddMMYYYY, machineName, portDB);
+        EvaluateViability eval = new EvaluateViability(machineName, portDB, portWeb);
     }
 }

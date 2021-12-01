@@ -7,17 +7,27 @@ public class Deliveries {
     private static final int DELIVERY_COST = 50;
     private HashMap<String, DeliveryDetails> deliveryMap = new HashMap<>();
     private ArrayList<DeliveryDetails> completedDeliveries = new ArrayList<>();
+    private ArrayList<DeliveryDetails> allDeliveries = new ArrayList<>();
 
     public Deliveries(ArrayList<OrderDetails> orderDetails){
-        makeDeliveryMap(orderDetails);
+        storeDeliveries(orderDetails);
+    }
+
+    public ArrayList<DeliveryDetails> getAllDeliveries() {
+        return allDeliveries;
+    }
+
+    public ArrayList<DeliveryDetails> getCompletedDeliveries() {
+        return completedDeliveries;
     }
 
     /**
      * iterates through every entry in orderDetails and adds it to a HashMap<orderNo, DeliveryDetails>
-     * which is stored in private instance variable - deliveryMap
+     * as well as an ArrayList<DeliveryDetails>
+     * which is stored in private instance variables - deliveryMap and allDeliveries respectively
      * @param orderDetails a list of every order made for the given date.
      */
-    public void makeDeliveryMap(ArrayList<OrderDetails> orderDetails){
+    public void storeDeliveries(ArrayList<OrderDetails> orderDetails){
         for(OrderDetails orderDetail: orderDetails){
             String orderNo = orderDetail.getOrderNo();
             String deliveredTo = orderDetail.getWhat3Words();
@@ -27,6 +37,7 @@ public class Deliveries {
             }
             DeliveryDetails deliveryDetails = new DeliveryDetails(orderNo, deliveredTo, totalCost);
             deliveryMap.put(orderNo, deliveryDetails);
+            allDeliveries.add(deliveryDetails);
         }
     }
 
