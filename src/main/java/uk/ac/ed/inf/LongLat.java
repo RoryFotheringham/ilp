@@ -18,7 +18,7 @@ public class LongLat {
 
     /**
      * overriding equals as LongLats objects will be compared in the context of
-     * querying Graph.graphMap which is a HashMap<LongLat, Node>
+     * querying Graph.graphMap which is a HashMap(LongLat, Node)
      * @param o object
      * @return true if objects have the same longitude and latitude coords
      */

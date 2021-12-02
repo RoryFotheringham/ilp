@@ -8,6 +8,12 @@ public class DeliveryDetails {
     private String deliveredTo;
     private int costInPence;
 
+    /**
+     * constructor stores the information passed to it
+     * @param orderNo the order number
+     * @param deliveredTo the what3words string describing the customer location
+     * @param costInPence the cost of the order including delivery cost
+     */
     public DeliveryDetails(String orderNo, String deliveredTo, int costInPence) {
         this.orderNo = orderNo;
         this.deliveredTo = deliveredTo;

@@ -3,6 +3,10 @@ package uk.ac.ed.inf;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * a node object whos list of edges represents the nodes that this node can reach
+ * also stores f and g values that are used in the path finding algorithm
+ */
 public class Node implements Comparable<Node>{
     private Node parent;
     private ArrayList<Edge> edges = new ArrayList<>();
@@ -13,11 +17,21 @@ public class Node implements Comparable<Node>{
     private double g = Double.MAX_VALUE; // total distance to this node from start node using current shortest path
     private String name;
 
+    /**
+     * creates a node with the given edges and location
+     * @param edges stores the other nodes that can be reached and this nodes distance to them
+     * @param longLat the location of the node
+     */
     public Node(ArrayList<Edge> edges, LongLat longLat) {
         this.edges = edges;
         this.longLat = longLat;
     }
 
+    /**
+     * Creates a node with only a location
+     * it is implied that the edges will be added later
+     * @param longLat the location of the node
+     */
     public Node(LongLat longLat){
         this.longLat = longLat;
     }
@@ -32,10 +46,6 @@ public class Node implements Comparable<Node>{
 
     public void addEdge(Edge edge){
         this.edges.add(edge);
-    }
-
-    public void setEdges(ArrayList<Edge> edges) {
-        this.edges = edges;
     }
 
     public ArrayList<Edge> getEdges() {
@@ -58,7 +68,7 @@ public class Node implements Comparable<Node>{
 
     /**
      * overriding equals as Node objects will be compared in the context of
-     * querying Graph.graphMap which is a HashMap<LongLat, Node>
+     * querying Graph.graphMap which is a HashMap(LongLat, Node)
      * @param o object
      * @return true if objects have the same longitude and latitude coords
      */

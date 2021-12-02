@@ -31,6 +31,11 @@ public class PathManagement {
         return absolutePath;
     }
 
+    /**
+     * converts the list of stopSegments into a list of paths where a path is the shortest possible path that reaches
+     * all of the nodes in the stop segment
+     * @param graph a Graph of nodes
+     */
     private void makePaths(Graph graph){
         for(StopSegment stopSegment: this.stopSegments){
             this.paths.add(stopSegment.bestPath(graph));
@@ -91,7 +96,7 @@ public class PathManagement {
     }
 
     /**
-     * method sorts th paths in this.paths according to the greedy method, starting with Appleton and proceeding to choose the next closest path.
+     * method sorts the paths in this.paths according to the greedy method, starting with Appleton and proceeding to choose the next closest path.
      * @param graph a Graph
      * @return a list of paths that are sorted
      */

@@ -4,14 +4,12 @@ package uk.ac.ed.inf;
 
 import com.mapbox.geojson.*;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-/*
-class handles the visualisation of flight path data
+
+/**
+ * class handles the visualisation of flight path data
  */
 public class Visualise {
     /**
@@ -54,7 +52,7 @@ public class Visualise {
     }
 
     /**
-     * Processes an ArrayList<Point> into a json string
+     * Processes an ArrayList(Point) into a json string
      * @param pointList
      * @return
      */

@@ -3,6 +3,9 @@ package uk.ac.ed.inf;
 import java.sql.Date;
 import java.util.HashMap;
 
+/**
+ * high level class handles the reading and storing of data from the database and web server
+ */
 public class Read {
     private Orders orders;
     private Deliveries deliveries;

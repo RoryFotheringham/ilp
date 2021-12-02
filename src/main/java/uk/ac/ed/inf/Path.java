@@ -15,6 +15,12 @@ public class Path {
     private LinkedList<Node> destinations = new LinkedList<>();
     LinkedList<String> orderNos = new LinkedList<>();
 
+    /**
+     * creates a Path object from a list of nodes and the total distance
+     * the pathList should have the property that each pair of consecutive nodes in the list have edges between them
+     * @param pathList the list of nodes in a path
+     * @param totalDistance the total euclidean distance between each consecutive pair of nodes
+     */
     public Path(ArrayList<Node> pathList, double totalDistance) {
         this.pathList = pathList;
         this.totalDistance = totalDistance;
@@ -52,11 +58,6 @@ public class Path {
         return this.pathList.get(0);
     }
 
-    public Node popPathList(){
-        Node node = this.pathList.get(0);
-        this.pathList.remove(0);
-        return node;
-    }
 
     public void setStops(ArrayList<Node> stops) {
         this.stops = stops;

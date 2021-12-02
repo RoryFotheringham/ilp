@@ -9,15 +9,19 @@ public class App
     public static void main( String[] args ){
 
         String day = args[0]; //verify that the first argument is a valid day
-        if(Integer.parseInt(day) > 12 || Integer.parseInt(day) < 0 || day.length() != 2){
+        if(Integer.parseInt(day) > 31 || Integer.parseInt(day) <= 0 || day.length() != 2){
+            System.out.println("day = " + day);
             throw new IllegalArgumentException("invalid date argument: date must be in form DD MM YYYY");
         }
         String month = args[1];//verify that the second argument is a valid month
-        if(Integer.parseInt(month) > 12 || Integer.parseInt(month) < 0 || month.length() != 2){
+        if(Integer.parseInt(month) > 12 || Integer.parseInt(month) <= 0 || month.length() != 2){
+            System.out.println("month = " + month);
+
             throw new IllegalArgumentException("invalid date argument: date must be in form DD MM YYYY");
         }
         String year = args[2];//verify that the third argument is a valid year
         if(year.length() != 4){
+            System.out.println("year = " + year);
             throw new IllegalArgumentException("invalid date argument: date must be in form DD MM YYYY");
         }
         String portWeb = args[3];

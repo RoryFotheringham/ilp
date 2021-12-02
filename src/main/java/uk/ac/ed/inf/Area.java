@@ -70,7 +70,7 @@ public class Area {
     }
 
     /**
-     * converts a geojson Polygon object to an ArrayList<NoFly> and stores it in the area object
+     * converts a geojson Polygon object to an ArrayList(NoFly) and stores it in the area object
      * @param featureCollection feature collection that is a polygon.
      */
     private void noFlyListFromPolygon(FeatureCollection featureCollection){
@@ -100,7 +100,7 @@ public class Area {
     }
 
     /**
-     * creates landmark objects read from the server and adds them to an ArrayList<Lanmark>
+     * creates landmark objects read from the server and adds them to an ArrayList(Landmark)
      */
     private void createLandmarks(){
         FeatureCollection featureCollection = FeaturesFromBuildingsServer(LANDMARKS_LOCATION);

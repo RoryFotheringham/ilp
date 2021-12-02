@@ -3,7 +3,17 @@ package uk.ac.ed.inf;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * class handles writing flightPath and deliveries information to the database
+ */
 public class DBWrite {
+    /**
+     * Constructor takes the deliveries and flightpath information and writes it to the database
+     * @param flightPath the flightpath of the drone
+     * @param deliveries information representing the deliveries made for a specific date
+     * @param machineName machine name
+     * @param portDB port of the database
+     */
     public DBWrite(FlightPath flightPath, Deliveries deliveries, String machineName, String portDB) {
         Connection conn = getConnection(machineName, portDB);
         writeFlightPath(conn, flightPath);

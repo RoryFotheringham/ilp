@@ -45,10 +45,10 @@ public class StopSegment {
 
     /**
      * Finds the possible paths that traverse every required node in a StopSegment.
-     * If a StopSegment contains only one store then there is only one possible path (store -> destination)
-     * If there are two stores then there are two ways (store_1 -> store_2 -> customer) or (store_2 -> store_1 -> customer)
+     * If a StopSegment contains only one store then there is only one possible path (store - destination)
+     * If there are two stores then there are two ways (store_1 - store_2 - customer) or (store_2 - store_1 - customer)
      * @param graph a Graph
-     * @return an ArrayList<Path> of size either 1 or 2
+     * @return an ArrayList(Path) of size either 1 or 2
      */
     private ArrayList<Path> possiblePaths(Graph graph){
         LinkedList<Node> deliverTo = new LinkedList<>();

@@ -19,7 +19,11 @@ public class Menus {
     ArrayList<MenuDetails> menuDetailsList;//Contains menu data which is stored on instantiation of Menus class.
     private HashMap<String, Item> itemMap;
 
-
+    /**
+     * Constructor reads and stores menus information from the web server
+     * @param machineName machine name
+     * @param port port of the web server
+     */
     public Menus(String machineName, String port){
         this.port = port;
         this.machineName = machineName;
@@ -32,9 +36,9 @@ public class Menus {
     }
 
     /**
-     * Makes a request to the web server for the JSON menus data and parses into an ArrayList<MenuDetails>.
+     * Makes a request to the web server for the JSON menus data and parses into an ArrayList(MenuDetails).
      * This method is called when an instance of Menus is created.
-     * @return Returns an ArrayList<MenuDetails> with fields: name, location, menu filled with respect to the JSON file.
+     * @return Returns an ArrayList(MenuDetails) with fields: name, location, menu filled with respect to the JSON file.
      */
     private ArrayList<MenuDetails> makeMenus(){ //todo can/should this be static? investigate
         Client client = new Client();
@@ -47,7 +51,7 @@ public class Menus {
     }
 
     /**
-     * Creates an map of type <String, Item> to enable a constant lookup of item cost and store location.
+     * Creates an map of type (String, Item) to enable a constant lookup of item cost and store location.
      * @return returns the map
      */
      private HashMap<String, Item> makeItemMap(){

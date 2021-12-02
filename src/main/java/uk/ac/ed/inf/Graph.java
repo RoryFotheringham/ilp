@@ -14,14 +14,28 @@ public class Graph{
     private ArrayList<Node> stores = new ArrayList<>();
     private ArrayList<Node> customers = new ArrayList<>();
 
-    public Graph(ArrayList<Node> nodes){//constructor only to be used for generating test graphs.
+    /**
+     * constructor only to be used for generating test graphs.
+     * @param nodes the nodes in the graph
+     */
+    public Graph(ArrayList<Node> nodes){
         this.nodeList = nodes;
     }
 
+    /**
+     * Constructor generates and stores a graph of nodes
+     * @param area information on the no fly zone and landmarks
+     * @param orders information on the orders placed
+     */
     public Graph(Area area, Orders orders) {
         generateGraph(area, orders);
     }
 
+    /**
+     * looks up the node that corresponds to a given longlat
+     * @param longLat the given longlat
+     * @return the node that corresponds to the given longlat
+     */
     public Node graphMapQuery(LongLat longLat){
         return graphMap.get(longLat);
     }
@@ -88,7 +102,7 @@ public class Graph{
 
     /**
      * generates a node containing the location of appleton tower
-     * @param area
+     * @param area contains information on the noflyzone and landmarks
      */
     private void generateAppletonNode(Area area){
         Node appletonNode = new Node(APPLETON_TOWER);

@@ -12,7 +12,15 @@ public class OrderDetails {
     private LongLat deliverTo;
     private String what3Words;
 
-public OrderDetails(String orderNo, String deliveryDate, String customer, LongLat deliverTo, String what3Words) {
+    /**
+     * simple constructor directly stores the parameters passed in an OrderDetails object
+     * @param orderNo the number of the order placed
+     * @param deliveryDate the date of the order placed
+     * @param customer the customer Id number
+     * @param deliverTo the LongLat coords of the customer location
+     * @param what3Words the what3words address of the customer location
+     */
+    public OrderDetails(String orderNo, String deliveryDate, String customer, LongLat deliverTo, String what3Words) {
     this.deliveryDate = deliveryDate;
     this.customer = customer;
     this.deliverTo = deliverTo;

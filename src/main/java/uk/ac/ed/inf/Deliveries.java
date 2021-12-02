@@ -13,6 +13,10 @@ public class Deliveries {
     private ArrayList<DeliveryDetails> completedDeliveries = new ArrayList<>();
     private ArrayList<DeliveryDetails> allDeliveries = new ArrayList<>();
 
+    /**
+     * Constructor stores all of the orders placed in a list and map
+     * @param orderDetails information on all of the orders placed
+     */
     public Deliveries(ArrayList<OrderDetails> orderDetails){
         storeDeliveries(orderDetails);
     }

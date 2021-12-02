@@ -3,6 +3,9 @@ package uk.ac.ed.inf;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * class responsible for converting a path into a flightpath that can be read by a drone
+ */
 public class FlightPath {
     private static final int ANGLE_LIMIT = 10;
     private static final int DEGREES = 360;
@@ -16,6 +19,7 @@ public class FlightPath {
     private Path absolutePath;
     private int battery = BATTERY_INITIAL;
     private ArrayList<Move> flightPath = new ArrayList<>();
+    private Area area;
 
 
     /**
@@ -24,8 +28,9 @@ public class FlightPath {
      * @param absolutePath an Absolute path for the entire day of orders
      * @param deliveries a collection of delivery data
      */
-    public FlightPath(Graph graph, Path absolutePath, Deliveries deliveries){
+    public FlightPath(Graph graph, Path absolutePath, Deliveries deliveries, Area area){
         this.absolutePath = absolutePath;
+        this.area = area;
         generateFlightPath(graph, deliveries);
     }
 
@@ -83,6 +88,7 @@ public class FlightPath {
         Node currentNode = absolutePath.peekPathList();
         while(absolutePath.getPathList().size() > 1){
             if(this.battery < 0){
+                System.out.println("Fatal error: the battery has run out");
                 throw new IllegalStateException("battery cannot be below 0");
             }
             Path subPath = absolutePath.popSubPath(); // gets a subPath containing information for the next order
@@ -108,7 +114,7 @@ public class FlightPath {
      * @param subPath a Path consisting of a list of Nodes which represents the nodes in a single order.
      *                subPath.stops should represent the stores and customer nodes in the order.
      *                There should only be one value in subPath.destinations
-     * @return An ArrayList<Move> which would guide the drone from subPath.pathList.getFirst().longLat to subPath.pathList.getLast().longLat
+     * @return An ArrayList(Move) which would guide the drone from subPath.pathList.getFirst().longLat to subPath.pathList.getLast().longLat
      */
     private ArrayList<Move> generateSubFlightPath(Path subPath) {
         if (subPath.getDestinations().size() != 1) {
@@ -128,7 +134,7 @@ public class FlightPath {
         LongLat destinationPos = destinationNode.getLongLat();
 
         while(!stops.isEmpty()){
-            //The ArrayList<Move> subFlightPath is updated in the method findBestAngle - adding the Move that would result in being the closest to destinationPos
+            //The ArrayList(Move) subFlightPath is updated in the method findBestAngle - adding the Move that would result in being the closest to destinationPos
             //The result of making this move is returned and stored as nextPos
             LongLat nextPos = findBestAngle(currentPos, destinationPos, subFlightPath, orderNo);
             if (isHovering(subFlightPath)){ //(isHovering() == true) indicates that the destinationPos has been reached
@@ -169,7 +175,7 @@ public class FlightPath {
         for(int candidateAngle = 0; candidateAngle < DEGREES; candidateAngle += ANGLE_LIMIT){
             LongLat candidatePos = currentPos.nextPosition(candidateAngle);
             double candidateDistance = candidatePos.distanceTo(destination);
-            if(candidateDistance < minDistance) {
+            if(candidateDistance < minDistance && !area.intersectsNoFly(currentPos, candidatePos)) {
                 minDistance = candidateDistance;
                 minDistancePos = candidatePos;
                 minDistanceAngle = candidateAngle;

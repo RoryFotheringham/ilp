@@ -50,7 +50,7 @@ public class Orders {
     }
 
     /**
-     * Closes the database connection, catches a sql exeption
+     * Closes the database connection, catches a sql exception
      * @param conn connection
      */
     private void closeConnection(Connection conn) {
@@ -135,6 +135,10 @@ public class Orders {
                 order.getItems().add(itemMap.get(itemName)); //add items into the order object
             }
             ordersList.add(order);
+        }
+        if(ordersList.size() == 0){
+            System.out.println("There are no orders for the specified date");
+            System.exit(0);
         }
         return ordersList;
     }

@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-/*
-*class handles implementation of A* path finding algorithm as explained in AI: A Modern Introduction by S. Russell and Peter Norvig.
-* (Specifically, my reference for this algorithm is from Inf2D - Reasoning And Agents lectures)
-*The algorithm was first published by Peter Hart, Nils Nilsson and Bertram Raphael in 1968 from the Stanford Research Institute
-*For the implementation, I used this tutorial: https://stackabuse.com/graphs-in-java-a-star-algorithm/ as a reference.
-* I did not copy the code exactly but my implementation was strongly influenced by it.
-*/
+/**
+ * class handles implementation of A* path finding algorithm as explained in AI: A Modern Introduction by S. Russell and Peter Norvig.
+ *  (Specifically, my reference for this algorithm is from Inf2D - Reasoning And Agents lectures)
+ * The algorithm was first published by Peter Hart, Nils Nilsson and Bertram Raphael in 1968 from the Stanford Research Institute
+ * For the implementation, I used this tutorial: https://stackabuse.com/graphs-in-java-a-star-algorithm/ as a reference.
+ *  I did not copy the code exactly but my implementation was strongly influenced by it.
+ */
 public class PathFind {
     /**
      * high level static method creates a path whos pathList consists of the shortest path from a start node to a target node.
@@ -86,7 +86,7 @@ public class PathFind {
      * @param deliverTo the destination to be added to the new path
      * @param orderNos the orderNos to be added to the new path
      * @return a path containing a pathList constructed from the 'family tree' of nodes as well as
-     * the stops, destination and orderNos that have been passed as aruments
+     * the stops, destination and orderNos that have been passed as arguments
      */
     private static Path pathFromAStar(Node node, ArrayList<Node> stops, LinkedList<Node> deliverTo, LinkedList<String> orderNos){
         ArrayList<Node> pathList = new ArrayList<>();

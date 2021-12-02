@@ -3,6 +3,9 @@ package uk.ac.ed.inf;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Class responsible for finding the sampled average percentage monetary value
+ */
 public class EvaluateViability {
     private static final int NUMBER_OF_SAMPLES = 7;
     private ArrayList<Date> sampledDates;
@@ -11,6 +14,12 @@ public class EvaluateViability {
     private String portWeb;
     private String machineName;
 
+    /**
+     * basic constructor, finds and prints the sampled average monetary value when called
+     * @param machineName machine name
+     * @param portDB port of the database
+     * @param portWeb port of the web server
+     */
     public EvaluateViability(String machineName, String portDB, String portWeb) {
         this.portDB = portDB;
         this.portWeb = portWeb;
@@ -28,7 +37,7 @@ public class EvaluateViability {
     public void printSampledAvePercentage() {
         System.out.println("The average percentage monetary value of the service over " + NUMBER_OF_SAMPLES +
                 " randomly sampled days is: " + sampledAvePercentage + "%");
-        System.out.print("The sampled dates where: ");
+        System.out.print("The sampled dates were: ");
         for(Date date : sampledDates){
             System.out.print(date.toString() + ", ");
         }

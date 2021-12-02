@@ -2,6 +2,9 @@ package uk.ac.ed.inf;
 
 import java.util.ArrayList;
 
+/**
+ * High level class processes order, delivery and area information to calculate an efficient flightpath for a drone
+ */
 public class Process {
     private ArrayList<Node> absPathList;// the list of nodes needed to be reached by the drone in the right order such that
                                         // a straight line connecting the nodes in a sequence will not intersect the nofly zone
@@ -21,7 +24,7 @@ public class Process {
         absPathList.addAll(pathManagement.getAbsolutePath().getPathList());
         Path absPath = new Path(absPathList, 0);
         // process the absolute path into a flight path
-        FlightPath flightPath = new FlightPath(graph, pathManagement.getAbsolutePath(), deliveries);
+        FlightPath flightPath = new FlightPath(graph, pathManagement.getAbsolutePath(), deliveries, area);
         this.absPathList = absPath.getPathList();
         this.flightPath = flightPath;
     }
