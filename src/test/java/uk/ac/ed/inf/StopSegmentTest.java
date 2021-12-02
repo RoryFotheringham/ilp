@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 
 public class StopSegmentTest {
+    /*
     TestObjects to = new TestObjects();
     ArrayList<Node> testNodes = to.testNodes;
     Graph testGraph = new Graph(testNodes);
@@ -48,4 +49,6 @@ public class StopSegmentTest {
         Path actual = generateTestStopSegment_1().bestPath(testGraph);
         assertEquals(testList_1, actual.getPathList());
     }
+
+     */
 }

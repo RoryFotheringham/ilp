@@ -14,8 +14,8 @@ public class Menus {
     private static final String MENUS_JSON_DESTINATION = "/menus/menus.json";
     private static final int DELIVERY_CHARGE = 50; //50p delivery cost to be added to each delivery cost
 
-    String port;
-    String machineName;
+    private String port;
+    private String machineName;
     ArrayList<MenuDetails> menuDetailsList;//Contains menu data which is stored on instantiation of Menus class.
     private HashMap<String, Item> itemMap;
 
@@ -61,20 +61,6 @@ public class Menus {
             }
         }
         return itemMap;
-    }
-
-    /**
-     * Calculates the total delivery cost of an arbitrary number of items.
-     * @param requestedItems arbitrary number of strings which the method will calculate the cost of delivering.
-     * @return returns the total cost of the items including the delivery charge.
-     */
-    public int getDeliveryCost(String ... requestedItems){
-        int totalCost = DELIVERY_CHARGE;
-        for (String itemName : requestedItems){
-            Item item = getItemMap().get(itemName);
-            totalCost += item.getPence();
-        }
-        return totalCost;
     }
 }
 

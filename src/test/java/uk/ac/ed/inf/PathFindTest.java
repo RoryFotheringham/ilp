@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class PathFindTest {
+    /*
     TestObjects to = new TestObjects();
     ArrayList<Node> testNodes = to.testNodes;
     Graph testGraph = to.testGraph;
@@ -58,5 +59,7 @@ public class PathFindTest {
         expected.add(testNodes.get(3));
         assertEquals(expected, path.getPathList());
     }
+
+     */
 }
 

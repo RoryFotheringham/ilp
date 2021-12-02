@@ -3,6 +3,10 @@ package uk.ac.ed.inf;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * class used to store delivery information in the form that is written to the database
+ * and keep track of deliveries that have been made by the drone
+ */
 public class Deliveries {
     private static final int DELIVERY_COST = 50;
     private HashMap<String, DeliveryDetails> deliveryMap = new HashMap<>();
@@ -22,8 +26,8 @@ public class Deliveries {
     }
 
     /**
-     * iterates through every entry in orderDetails and adds it to a HashMap<orderNo, DeliveryDetails>
-     * as well as an ArrayList<DeliveryDetails>
+     * iterates through every entry in orderDetails and adds it to a HashMap(orderNo, DeliveryDetails)
+     * as well as an ArrayList(DeliveryDetails)
      * which is stored in private instance variables - deliveryMap and allDeliveries respectively
      * @param orderDetails a list of every order made for the given date.
      */

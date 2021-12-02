@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 
 
 public class PathTest {
+    /*
     TestObjects to = new TestObjects();
     ArrayList<Node> testNodes = to.testNodes;
     Graph testGraph = new Graph(testNodes);
@@ -166,6 +167,8 @@ public class PathTest {
 
     }
 
+
+     */
 }
 
 

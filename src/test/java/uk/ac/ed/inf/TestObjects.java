@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class TestObjects {
+    /*
     static final LongLat APPLETON_LONGLAT = new LongLat(-3.186874, 55.944494);
     static final Node APPLETON_NODE = new Node(APPLETON_LONGLAT);
     Graph testGraph;
@@ -298,4 +299,6 @@ public class TestObjects {
 
 
 
+
+     */
 }

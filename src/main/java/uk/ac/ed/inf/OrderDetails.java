@@ -26,16 +26,8 @@ public OrderDetails(String orderNo, String deliveryDate, String customer, LongLa
         return orderNo;
     }
 
-    public String getDeliveryDate() {
-        return deliveryDate;
-    }
-
     public ArrayList<Item> getItems() {
         return items;
-    }
-
-    public String getCustomer() {
-        return customer;
     }
 
     public LongLat getDeliverTo() {

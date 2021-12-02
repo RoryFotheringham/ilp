@@ -14,29 +14,35 @@ import java.util.List;
 class handles the visualisation of flight path data
  */
 public class Visualise {
-    /*
-    constructor calls functions that create the geoJson files
+    /**
+     *constructor calls functions that create the geoJson files
+     * @param flightPath the flightpath that will be converted to a geojson string
+     * @param date_std the date in standard british format
+     * @param pathList path list of nodes - used for visualising the list of nodes in the Path
+     *                 - note that the functionality to create this file has been commented to avoid cluttering the submission
+     *                 but has been a useful visual aid for comparing the Path with the FlightPath and may be
+     *                 useful for future maintenance.
      */
-    public Visualise(ArrayList<Move> flightPath, String ddMMYYYY, ArrayList<Node> pathList){
+    public Visualise(ArrayList<Move> flightPath, String date_std, ArrayList<Node> pathList){
         ArrayList<Point> pointList = makePointList(flightPath);
         ArrayList<Point> nodePointList = pointsFromAbsolutePath(pathList);
         String nodeString = jsonFromPoints(nodePointList);
         String geoJsonPathString = jsonFromPoints(pointList);
-        makeFile(geoJsonPathString, ddMMYYYY);
-        makeFile(nodeString, "node");
+        makeFile(geoJsonPathString, date_std); //creates the geojson FeatureCollection file in the top level dir.
+        //makeFile(nodeString, "node"); // create the pathList file
     }
 
-    private String makeFileName(String ddMMYYY){
-        return "drone-" + ddMMYYY + ".geojson";
+    private String makeFileName(String date_std){
+        return "drone-" + date_std + ".geojson";
     }
 
     /**
      * create a geoJson file in the top level of the project from a geoJsonString
      * @param geoJsonPathString the geoJson string
-     * @param ddMMYYY the date
+     * @param date_std the date
      */
-    private void makeFile(String geoJsonPathString, String ddMMYYY){
-        String fileName = makeFileName(ddMMYYY);
+    private void makeFile(String geoJsonPathString, String date_std){
+        String fileName = makeFileName(date_std);
         try{
             FileWriter file = new FileWriter(fileName);
             file.write(geoJsonPathString);

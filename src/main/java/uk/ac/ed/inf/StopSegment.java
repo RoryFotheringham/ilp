@@ -19,10 +19,6 @@ public class StopSegment {
         this.destination = destination;
     }
 
-    public void addStore(Node store){
-        stores.add(store);
-    }
-
     public ArrayList<Node> getStops(){
         ArrayList<Node> stops = new ArrayList<>(stores);
         stops.add(destination);
